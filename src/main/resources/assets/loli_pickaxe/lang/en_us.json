@@ -1,0 +1,11 @@
+{
+  "item.loli_pickaxe.loli_pickaxe": "Loli Pickaxe",
+  "commands.loli_pickaxe.defense" : "Defensed %s entities",
+  "item.loli_pickaxe.time_clock": "Time Clock",
+  "entity.loli_pickaxe.loli": "Loli",
+  "death.attack.loli_pickaxe": "%s was killed by %s using Loli Pickaxe",
+  "mods.loli_pickaxe,tab" : "Some Tools",
+  "item.loli_pickaxe.loli_spawn_egg": "Loli Spawn Egg",
+  "list.loli_pickaxe.add": "Left click entity to added Loli Pickaxe on it hand",
+  "list.loli_pickaxe.removeLoli": "Light lick Loli Entity to remove it"
+}

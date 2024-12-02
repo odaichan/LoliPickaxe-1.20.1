@@ -1,0 +1,47 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.daichang.loli_pickaxe.mixins",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "loli_pickaxe.refmap.json",
+  "mixins": [
+    "MixinEntity",
+    "MixinLivingEntity",
+    "MixinPlayer",
+    "TimeStopMixin$EndDragonFightMixin",
+    "TimeStopMixin$ExperienceOrbMixin",
+    "TimeStopMixin$ForgeEventFactoryMixin",
+    "TimeStopMixin$InventoryMixin",
+    "TimeStopMixin$ItemEntityMixin",
+    "TimeStopMixin$LevelChunkMixin",
+    "TimeStopMixin$LevelMixin",
+    "TimeStopMixin$LevelTicksMixin",
+    "TimeStopMixin$PersistentEntitySectionManagerMixin",
+    "TimeStopMixin$RaidsMixin",
+    "TimeStopMixin$RenderLevelStageEventMixin",
+    "TimeStopMixin$ServerChunkCacheMixin",
+    "TimeStopMixin$ServerFunctionManagerMixin",
+    "TimeStopMixin$ServerLevelMixin",
+    "TimeStopMixin$WorldBorderMixin"
+  ],
+  "client": [
+    "TimeStopMixin$AbstractContainerScreenMixin",
+    "TimeStopMixin$CameraMixin",
+    "TimeStopMixin$ChatListenerMixin",
+    "TimeStopMixin$ClientLevelMixin",
+    "TimeStopMixin$CreativeModeInventoryScreenMixin",
+    "TimeStopMixin$GameRendererMixin",
+    "TimeStopMixin$GuiMixin",
+    "TimeStopMixin$ItemInHandRendererMixin",
+    "TimeStopMixin$LightTextureMixin",
+    "TimeStopMixin$MusicManagerMixin",
+    "TimeStopMixin$ParticleEngineMixin",
+    "TimeStopMixin$RenderStateShardMixin",
+    "TimeStopMixin$SoundManagerMixin",
+    "TimeStopMixin$TextureManagerMixin",
+    "TimeStopMixin$TutorialMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
