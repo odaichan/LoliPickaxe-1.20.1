@@ -8,5 +8,7 @@
   "item.loli_pickaxe.loli_spawn_egg": "召唤 萝莉",
   "item.loli_pickaxe.test": "剑",
   "list.loli_pickaxe.add": "左击实体将氪金萝莉添加到其手中",
-  "list.loli_pickaxe.removeLoli": "左键萝莉以删除它"
+  "list.loli_pickaxe.removeLoli": "左键萝莉以删除它",
+  "chat.loli_pickaxe.chat_1": "带长复刻的氪金萝莉模组",
+  "chat.loli_pickaxe.chat_2": "已在Github开源: https://github.com/odaichan/LoliPickaxe-1.20.1/tree/master"
 }

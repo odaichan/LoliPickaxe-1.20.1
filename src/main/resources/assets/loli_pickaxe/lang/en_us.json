@@ -8,5 +8,7 @@
   "item.loli_pickaxe.loli_spawn_egg": "Loli Spawn Egg",
   "item.loli_pickaxe.test": "Sword",
   "list.loli_pickaxe.add": "Left click entity to added Loli Pickaxe on it hand",
-  "list.loli_pickaxe.removeLoli": "Light lick Loli Entity to remove it"
+  "list.loli_pickaxe.removeLoli": "Light lick Loli Entity to remove it",
+  "chat.loli_pickaxe.chat_1": "LoliPickaxe mod by Daichang",
+  "chat.loli_pickaxe.chat_2": "GithubUrl: https://github.com/odaichan/LoliPickaxe-1.20.1/tree/master"
 }

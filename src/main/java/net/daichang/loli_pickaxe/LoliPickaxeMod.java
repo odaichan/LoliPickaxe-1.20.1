@@ -30,11 +30,12 @@ public class LoliPickaxeMod {
         EntityRegistry.ENTITIES.register(modEventBus);
         TabRegister.tab.register(modEventBus);
         EnchantmentRegistry.ench.register(modEventBus);
+        AddonItems.deferred.register(modEventBus);
     }
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("HELLO from server starting");
+        LOGGER.info("Daichang's LoliPickaxe mod loading");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent

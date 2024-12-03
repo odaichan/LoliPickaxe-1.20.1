@@ -19,6 +19,7 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
@@ -79,5 +80,13 @@ public class LoliPickaxeEvent {
             LoliAttackUtil.killEntity(player, attacked);
             e.setCanceled(true);
         }
+    }
+
+
+    @SubscribeEvent
+    public static void sendMessageOfPlayer(PlayerEvent.PlayerLoggedInEvent e){
+        Player player = e.getEntity();
+        player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_1"), false);
+        player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_2"), false);
     }
 }
