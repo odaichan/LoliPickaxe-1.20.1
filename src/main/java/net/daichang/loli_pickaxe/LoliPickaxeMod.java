@@ -1,10 +1,7 @@
 package net.daichang.loli_pickaxe;
 
 import com.mojang.logging.LogUtils;
-import net.daichang.loli_pickaxe.common.register.EntityRegistry;
-import net.daichang.loli_pickaxe.common.register.ItemRegister;
-import net.daichang.loli_pickaxe.common.register.SoundRegister;
-import net.daichang.loli_pickaxe.common.register.TabRegister;
+import net.daichang.loli_pickaxe.common.register.*;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -20,23 +17,21 @@ import org.slf4j.Logger;
 @Mod("loli_pickaxe")
 public class LoliPickaxeMod {
 
-    // Define mod id in a common place for everything to reference
     public static final String MOD_ID = "loli_pickaxe";
-    // Directly reference a slf4j logger
+
     private static final Logger LOGGER = LogUtils.getLogger();
 
     public LoliPickaxeMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
         ItemRegister.items.register(modEventBus);
         SoundRegister.sounds.register(modEventBus);
         EntityRegistry.ENTITIES.register(modEventBus);
         TabRegister.tab.register(modEventBus);
+        EnchantmentRegistry.ench.register(modEventBus);
     }
 
-    // You can use SubscribeEvent and let the Event Bus discover methods to call
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
         LOGGER.info("HELLO from server starting");

@@ -6,6 +6,7 @@
   "death.attack.loli_pickaxe": "%s 被 %s 使用氪金萝莉抹杀了",
   "mods.loli_pickaxe,tab": "一些工具(大杂脍)",
   "item.loli_pickaxe.loli_spawn_egg": "召唤 萝莉",
+  "item.loli_pickaxe.test": "剑",
   "list.loli_pickaxe.add": "左击实体将氪金萝莉添加到其手中",
   "list.loli_pickaxe.removeLoli": "左键萝莉以删除它"
 }

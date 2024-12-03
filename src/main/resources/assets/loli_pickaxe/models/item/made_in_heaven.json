@@ -1,0 +1,9 @@
+{
+  "parent": "item/generated",
+  "textures": {
+    "layer0": "item/clock_00"
+  },
+  "display": {
+    "model" : "loli_pickaxe:custom/wood_sword.json"
+  }
+}

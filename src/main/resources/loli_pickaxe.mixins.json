@@ -6,6 +6,7 @@
   "refmap": "loli_pickaxe.refmap.json",
   "mixins": [
     "MixinEntity",
+    "MixinItemEntity",
     "MixinLivingEntity",
     "MixinPlayer",
     "TimeStopMixin$EndDragonFightMixin",
@@ -22,7 +23,8 @@
     "TimeStopMixin$ServerChunkCacheMixin",
     "TimeStopMixin$ServerFunctionManagerMixin",
     "TimeStopMixin$ServerLevelMixin",
-    "TimeStopMixin$WorldBorderMixin"
+    "TimeStopMixin$WorldBorderMixin",
+    "timer.MixinMadeInHaven$MixinLevel"
   ],
   "client": [
     "TimeStopMixin$AbstractContainerScreenMixin",

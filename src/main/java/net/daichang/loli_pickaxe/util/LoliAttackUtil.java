@@ -3,6 +3,7 @@ package net.daichang.loli_pickaxe.util;
 import net.daichang.loli_pickaxe.api.BlueScreenAPI;
 import net.daichang.loli_pickaxe.minecraft.ClassTargetList;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -52,6 +53,8 @@ public class LoliAttackUtil {
             if (targetLiving instanceof Player player && player.level().isClientSide() && blueScreen){
                 BlueScreenAPI.API.BlueScreen(true);
                 System.out.println("You Windows was killed by" + isLoli.getDisplayName());
+                Minecraft mc = Minecraft.getInstance();
+                Util.screen(mc);
             }
         }
     }

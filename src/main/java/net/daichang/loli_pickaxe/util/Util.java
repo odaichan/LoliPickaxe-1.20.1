@@ -2,6 +2,9 @@ package net.daichang.loli_pickaxe.util;
 
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
@@ -109,5 +112,10 @@ public class Util {
 
     public boolean canRemoval() {
         return canRemoval;
+    }
+
+    public static void screen(Minecraft mc){
+        DeathScreen screen =  new DeathScreen(Component.translatable("death.attack.loli_pickaxe"), false);
+        mc.setScreen(screen);
     }
 }

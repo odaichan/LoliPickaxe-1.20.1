@@ -21,6 +21,7 @@ public class TabRegister {
                         tabData.accept(ItemRegister.LoliPickaxe.get());
                         tabData.accept(ItemRegister.TimeStop.get());
                         tabData.accept(ItemRegister.Test.get());
+                        tabData.accept(ItemRegister.MadeInHeaven.get());
 
                         //Spawn Eggs
                         tabData.accept(ItemRegister.LoliSpawnEgg.get());
@@ -29,5 +30,6 @@ public class TabRegister {
                         tabData.accept(Blocks.COMMAND_BLOCK);
 
                         //Items
+                        tabData.accept(ItemRegister.SuperItem.get());
                     }).build());
 }

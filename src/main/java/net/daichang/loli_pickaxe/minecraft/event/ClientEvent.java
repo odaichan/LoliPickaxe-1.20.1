@@ -11,6 +11,6 @@ import net.minecraftforge.fml.common.Mod;
 public class ClientEvent {
     @SubscribeEvent
     public static void onClientSetup(EntityRenderersEvent.RegisterRenderers event) {
-        event.registerEntityRenderer(EntityRegistry.LOLI.get(), LoliRender :: new);
+        event.registerEntityRenderer(EntityRegistry.LOLI.get(), LoliRender::new);
     }
 }

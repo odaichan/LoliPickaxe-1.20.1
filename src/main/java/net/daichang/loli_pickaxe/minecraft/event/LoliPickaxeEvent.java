@@ -1,4 +1,4 @@
-package net.daichang.loli_pickaxe.minecraft;
+package net.daichang.loli_pickaxe.minecraft.event;
 
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.Commands.*;
@@ -13,11 +13,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.event.RenderPlayerEvent;
-import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -64,13 +62,6 @@ public class LoliPickaxeEvent {
     public static void renderPlayerEvent(RenderPlayerEvent event){
         Player player = event.getEntity();
         if (player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))) LoliDefenseUtil.loliDefense(player);
-    }
-
-    @SubscribeEvent
-    public static void addCreative(BuildCreativeModeTabContentsEvent event) {
-        if (event.getTabKey() == CreativeModeTabs.COMBAT){
-            event.accept(ItemRegister.LoliPickaxe.get());
-        }
     }
 
     @SubscribeEvent

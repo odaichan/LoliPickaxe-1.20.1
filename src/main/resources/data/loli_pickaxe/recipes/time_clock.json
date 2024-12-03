@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:clock"
+    },
+    "A": {
+      "item": "minecraft:iron_ingot"
+    }
+  }
+},
+"pattern": [
+" # ",
+"#A#",
+" # "
+],
+"result": {
+"item": "loli_pickaxe:time_clock"
+},
+"show_notification": true
+}

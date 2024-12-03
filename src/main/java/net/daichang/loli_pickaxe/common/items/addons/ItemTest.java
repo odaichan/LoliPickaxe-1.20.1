@@ -2,6 +2,7 @@ package net.daichang.loli_pickaxe.common.items.addons;
 
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
+import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
@@ -29,10 +30,9 @@ public class ItemTest extends Item {
 
     @Override
     public boolean onLeftClickEntity(ItemStack stack, Player player, Entity entity) {
-        if(entity instanceof LivingEntity living && !(living instanceof EntityLoli) && !(living instanceof Player)){
+        if(entity instanceof LivingEntity living && !Util.isLoliEntity(living) && !(living instanceof Player)){
             living.setItemInHand(InteractionHand.MAIN_HAND, new ItemStack(ItemRegister.LoliPickaxe.get()));
         }else if(entity instanceof EntityLoli loli){
-            loli.setPos(Double.NaN, Double.NaN, Double.NaN);
             loli.onClientRemoval();
             loli.onRemovedFromWorld();
             loli.remove(Entity.RemovalReason.KILLED);

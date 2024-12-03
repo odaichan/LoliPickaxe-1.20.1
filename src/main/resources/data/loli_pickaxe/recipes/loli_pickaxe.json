@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "#": {
+      "item": "minecraft:iron_ingot"
+    },
+    "X": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "Y": {
+      "item": "minecraft:iron_axe"
+    },
+    "Z": {
+      "item": "minecraft:iron_shovel"
+    }
+}
+  },
+  "pattern": [
+    "XYZ",
+    " # ",
+    " # "
+  ],
+  "result": {
+    "item": "loli_pickaxe:loli_pickaxe"
+  },
+  "show_notification": true
+}

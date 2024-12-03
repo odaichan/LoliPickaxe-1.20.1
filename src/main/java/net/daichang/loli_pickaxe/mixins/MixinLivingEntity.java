@@ -4,6 +4,7 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -25,6 +26,8 @@ public abstract class MixinLivingEntity {
     @Shadow public abstract void indicateDamage(double p_270514_, double p_270826_);
 
     @Shadow public abstract boolean isDeadOrDying();
+
+    private final Minecraft mc = Minecraft.getInstance();
 
     @Unique
     private final LivingEntity loli_pickaxe$living = (LivingEntity) (Object) this;
