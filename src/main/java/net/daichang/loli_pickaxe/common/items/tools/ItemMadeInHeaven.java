@@ -18,12 +18,11 @@ public class ItemMadeInHeaven extends Item {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand p_41434_) {
-        HavenUtil.setMadeInHaven(true);
-        if(level.isClientSide()){
-            player.displayClientMessage(Component.literal(   ChatFormatting.YELLOW +"[Made in heaven, time begins to accelerate!]"), false);
-        }
         if(player.isShiftKeyDown()){
             HavenUtil.setMadeInHaven(false);
+        }else {
+            HavenUtil.setMadeInHaven(true);
+            if(level.isClientSide())player.displayClientMessage(Component.literal(   ChatFormatting.YELLOW +"『Made in heaven, time begins to accelerate!』"), false);
         }
         return super.use(level, player, p_41434_);
     }

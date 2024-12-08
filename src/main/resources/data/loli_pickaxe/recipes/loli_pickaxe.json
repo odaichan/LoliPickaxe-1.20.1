@@ -14,8 +14,8 @@
     "Z": {
       "item": "minecraft:iron_shovel"
     }
-}
-  },
+  }
+},
   "pattern": [
     "XYZ",
     " # ",

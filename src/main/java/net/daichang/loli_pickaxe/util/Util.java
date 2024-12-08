@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.util;
 
+import net.daichang.loli_pickaxe.LoliPickaxeMod;
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.minecraft.client.Minecraft;
@@ -13,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -36,6 +38,14 @@ public class Util {
     public static boolean remove = false;
 
     public static boolean canRemoval = false;
+
+    public static boolean isBlocking(@NotNull Player target) {
+        return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
+    }
+
+    public static UseAnim getUseAnim() {
+        return UseAnim.valueOf(LoliPickaxeMod.MOD_ID + ":BLOCK");
+    }
 
     public static void copyProperties(Class<?> clazz, Object source, Object target) {
         try {

@@ -1,7 +1,7 @@
 package net.daichang.loli_pickaxe.common.register;
 
 import net.daichang.loli_pickaxe.common.items.addons.Core.ItemAddon;
-import net.daichang.loli_pickaxe.util.item.LoliAddon;
+import net.daichang.loli_pickaxe.util.items.LoliAddon;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;

@@ -24,6 +24,7 @@
     "TimeStopMixin$ServerFunctionManagerMixin",
     "TimeStopMixin$ServerLevelMixin",
     "TimeStopMixin$WorldBorderMixin",
+    "sword_blocks.UseAnimMixin",
     "timer.MixinMadeInHaven$MixinLevel"
   ],
   "client": [
@@ -35,13 +36,18 @@
     "TimeStopMixin$GameRendererMixin",
     "TimeStopMixin$GuiMixin",
     "TimeStopMixin$ItemInHandRendererMixin",
+    "TimeStopMixin$LevelRendererMixin",
     "TimeStopMixin$LightTextureMixin",
+    "TimeStopMixin$MinecraftMixin",
     "TimeStopMixin$MusicManagerMixin",
     "TimeStopMixin$ParticleEngineMixin",
     "TimeStopMixin$RenderStateShardMixin",
     "TimeStopMixin$SoundManagerMixin",
     "TimeStopMixin$TextureManagerMixin",
-    "TimeStopMixin$TutorialMixin"
+    "TimeStopMixin$TutorialMixin",
+    "sword_blocks.HumanoidModelMixin",
+    "sword_blocks.ItemInHandRendererMixin",
+    "sword_blocks.PlayerItemInHandLayerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

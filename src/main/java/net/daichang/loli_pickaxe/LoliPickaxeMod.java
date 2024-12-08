@@ -24,6 +24,7 @@ public class LoliPickaxeMod {
     public LoliPickaxeMod() {
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        AttributesRegister.attribute.register(modEventBus);
         MinecraftForge.EVENT_BUS.register(this);
         ItemRegister.items.register(modEventBus);
         SoundRegister.sounds.register(modEventBus);
@@ -35,7 +36,7 @@ public class LoliPickaxeMod {
 
     @SubscribeEvent
     public void onServerStarting(ServerStartingEvent event) {
-        LOGGER.info("Daichang's LoliPickaxe mod loading");
+        LOGGER.info("Daichang LoliPickaxe mod loading");
     }
 
     // You can use EventBusSubscriber to automatically register all static methods in the class annotated with @SubscribeEvent
