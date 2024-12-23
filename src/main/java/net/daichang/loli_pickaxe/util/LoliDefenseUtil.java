@@ -29,6 +29,7 @@ public class LoliDefenseUtil {
                 target.setHealth(target.getMaxHealth());
                 target.setAirSupply(300);
                 target.setTicksFrozen(-2);
+                Util.Override_DATA_HEALTH_ID(target, 20.0F);
             }
         } else if (entity instanceof EntityLoli loli) {
             loli.fallDistance = 0;

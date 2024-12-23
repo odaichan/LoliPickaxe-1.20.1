@@ -1,8 +1,10 @@
 package net.daichang.loli_pickaxe.common.entity;
 
 import com.google.common.collect.ImmutableList;
+import net.daichang.loli_pickaxe.common.register.AttributesRegister;
 import net.daichang.loli_pickaxe.common.register.EntityRegistry;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
+import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.network.protocol.Packet;
@@ -13,6 +15,7 @@ import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
+import net.minecraft.world.entity.ai.Brain;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.FloatGoal;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -46,9 +50,11 @@ public class EntityLoli extends Monster{
         this.aiStep();
         this.registerGoals();
         this.hurtMarked = true;
-        this.hurtTime = 0;
-        this.xpReward = 32127281;
+        this.hurtTime = -2;
+        this.xpReward = Integer.MAX_VALUE;
         this.isBaby();
+        this.dead = false;
+        this.invulnerableTime = -2;
     }
 
     public EntityLoli(EntityType<? extends Monster> loli, Level world) {
@@ -78,7 +84,20 @@ public class EntityLoli extends Monster{
         double a = new Random().nextDouble(0.1, 0.5);
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
             if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli)&& entity.isAlive() && !(entity instanceof Player)) {
-                LoliAttackUtil.killEntity(this, livingEntity);
+                Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
+                DeathList.addList(livingEntity);
+                livingEntity.hurtTime = 0;
+                livingEntity.getBrain().clearMemories();
+                livingEntity.getBrain().removeAllBehaviors();
+                for (int abc = 0; abc <= 20; abc ++){
+                    livingEntity.deathTime = abc;
+                }
+                if (livingEntity instanceof EnderDragon dragon){
+                    for (int dragonDeath = 0;dragonDeath <= 200; dragonDeath++){
+                        dragon.dragonDeathTime = dragonDeath;
+                        dragon.hurtTime = 0;
+                    }
+                }
                 this.setPos(livingEntity.getX() + a, livingEntity.getY() + a, livingEntity.getZ() + a);
             }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);
@@ -88,7 +107,7 @@ public class EntityLoli extends Monster{
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(200D))){
             if(entity instanceof LivingEntity living && !Util.isLoliEntity(living) && !(entity instanceof Player)){
                 this.setTarget(living);
-            } else if (entity instanceof Player player && player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))) {
+            } else if (entity instanceof Player player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))) {
                 this.setTarget(player);
             }
         }
@@ -104,8 +123,8 @@ public class EntityLoli extends Monster{
                 .add(Attributes.MOVEMENT_SPEED, 0.7D)
                 .add(Attributes.ATTACK_DAMAGE, Double.POSITIVE_INFINITY)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.1D)
-                .add(Attributes.ARMOR, 30)
                 .add(Attributes.KNOCKBACK_RESISTANCE, Integer.MAX_VALUE)
+                .add(AttributesRegister.LoliDamageType.get(), Integer.MAX_VALUE)
                 ;
     }
 
@@ -113,7 +132,7 @@ public class EntityLoli extends Monster{
     protected void registerGoals() {
         super.registerGoals();
         this.targetSelector.addGoal(2
-                , new NearestAttackableTargetGoal(this
+                , new NearestAttackableTargetGoal<>(this
                         , LivingEntity.class
                         , 0
                         , false
@@ -202,5 +221,10 @@ public class EntityLoli extends Monster{
         DATA_TARGETS = ImmutableList.of(DATA_TARGET_A, DATA_TARGET_B, DATA_TARGET_C);
         LIVING_ENTITY_SELECTOR = (p_31504_) -> p_31504_.getMobType() != MobType.UNDEAD && p_31504_.attackable();
         TARGETING_CONDITIONS = TargetingConditions.forCombat().range(20.0).selector(LIVING_ENTITY_SELECTOR);
+    }
+
+    @Override
+    public @NotNull Brain<?> getBrain() {
+        return brain;
     }
 }

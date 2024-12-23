@@ -21,11 +21,15 @@ public class MixinPlayer {
     @Unique
     private final Player loli_pickaxe$loli = (Player) (Object) this;
 
-    @Inject(method = "hurt", at = @At("RETURN"))
+    @Inject(method = "hurt", at = @At("RETURN"), cancellable = true)
     private void hurt(DamageSource source, float p_36155_, CallbackInfoReturnable<Boolean> cir){
         Entity target = source.getEntity();
         if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe) && target instanceof LivingEntity){
             LoliAttackUtil.killEntity(loli_pickaxe$loli,target);
+            cir.setReturnValue(false);
+        }
+        if(loli_pickaxe$loli.isUsingItem() && loli_pickaxe$loli.getMainHandItem().getItem() == ItemRegister.Test.get() && target != null){
+            target.hurt(source, p_36155_);
         }
     }
 }

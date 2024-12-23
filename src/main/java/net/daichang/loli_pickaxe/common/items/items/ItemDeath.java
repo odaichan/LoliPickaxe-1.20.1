@@ -1,6 +1,6 @@
 package net.daichang.loli_pickaxe.common.items.items;
 
-import net.daichang.loli_pickaxe.api.DaiChangScreenAPI;
+import net.daichang.loli_pickaxe.util.FieldTrace;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -14,8 +14,8 @@ public class ItemDeath extends Item {
     }
 
     @Override
-    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player p_41433_, InteractionHand p_41434_) {
-        DaiChangScreenAPI.INSTANCE.continuouslyOpenSpecifiedScreen("net.minecraft.client.gui.screens.DeathScreen.class");
-        return super.use(p_41432_, p_41433_, p_41434_);
+    public InteractionResultHolder<ItemStack> use(Level p_41432_, Player player, InteractionHand p_41434_) {
+        FieldTrace.traceAllFields(Player.class);
+        return super.use(p_41432_, player, p_41434_);
     }
 }

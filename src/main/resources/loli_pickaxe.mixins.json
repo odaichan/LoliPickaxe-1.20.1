@@ -45,6 +45,7 @@
     "TimeStopMixin$SoundManagerMixin",
     "TimeStopMixin$TextureManagerMixin",
     "TimeStopMixin$TutorialMixin",
+    "client.RendererMixin$MixinItemRender",
     "sword_blocks.HumanoidModelMixin",
     "sword_blocks.ItemInHandRendererMixin",
     "sword_blocks.PlayerItemInHandLayerMixin"

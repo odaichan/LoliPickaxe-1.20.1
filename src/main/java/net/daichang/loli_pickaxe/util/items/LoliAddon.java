@@ -5,6 +5,7 @@ public class LoliAddon {
             "attack_range"
             ,"attack_damage"
             ,"break_range"
+            ,"attack_speed"
     };
 
     public static String[] getLoliAddons() {

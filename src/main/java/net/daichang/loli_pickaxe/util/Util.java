@@ -63,7 +63,7 @@ public class Util {
     public static void Override_DATA_HEALTH_ID(LivingEntity livingEntity, final float X) {
         SynchedEntityData data = new SynchedEntityData((Entity)livingEntity) {
             @NotNull
-            public <T> T m_135370_(@NotNull EntityDataAccessor<T> p_135371_) {
+            public <T> T get(@NotNull EntityDataAccessor<T> p_135371_) {
                 return (p_135371_ == LivingEntity.DATA_HEALTH_ID) ? (T)Float.valueOf(X) : (T)super.get(p_135371_);
             }
         };

@@ -2,7 +2,6 @@ package net.daichang.loli_pickaxe;
 
 import com.mojang.logging.LogUtils;
 import net.daichang.loli_pickaxe.common.register.*;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.server.ServerStartingEvent;
@@ -16,7 +15,6 @@ import org.slf4j.Logger;
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod("loli_pickaxe")
 public class LoliPickaxeMod {
-
     public static final String MOD_ID = "loli_pickaxe";
 
     private static final Logger LOGGER = LogUtils.getLogger();
@@ -45,9 +43,7 @@ public class LoliPickaxeMod {
 
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
-            // Some client setup code
-            LOGGER.info("HELLO FROM CLIENT SETUP");
-            LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            LOGGER.info("DaiChang's LoliPickaxe Mod");
         }
     }
 }

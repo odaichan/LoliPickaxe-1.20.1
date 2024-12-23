@@ -1,12 +1,15 @@
 package net.daichang.loli_pickaxe.util.HavenUtil;
 
+import net.daichang.loli_pickaxe.util.handler.TimeDataHandler;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 public class HavenUtil {
     private static  boolean made = false;
 
-    public static long DAY_TICK = 24000;
+    public static long MAX_DAY_TIME = 24000;
 
     public static boolean isHaven(){
         return made;
@@ -16,17 +19,15 @@ public class HavenUtil {
         made = haven;
     }
 
-    public static long setLong(long l){
-        l++;
-        return l;
-    }
-
     public static void setDayTime(Level level){
-        if(level instanceof ServerLevel serverLevel){
-            if(serverLevel.getDayTime() < DAY_TICK){
+        if(level instanceof ServerLevel serverLevel && !TimeDataHandler.get().isTimeStopped()){
+            if(serverLevel.getDayTime() < MAX_DAY_TIME){
                 serverLevel.setDayTime(serverLevel.dayTime()+50);
             }else {
                 serverLevel.setDayTime(0);
+                for (Player player : serverLevel.players()){
+                    player.sendSystemMessage(Component.translatable("time.loli_pickaxe.new_day"));
+                }
             }
         }
     }

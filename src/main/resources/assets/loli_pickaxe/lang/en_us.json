@@ -11,5 +11,8 @@
   "list.loli_pickaxe.removeLoli": "Light lick Loli Entity to remove it",
   "chat.loli_pickaxe.chat_1": "LoliPickaxe mod by Daichang",
   "chat.loli_pickaxe.chat_2": "GithubUrl: https://github.com/odaichan/LoliPickaxe-1.20.1/tree/master",
-  "attribute.loli_pickaxe.damage" : "Loli Damage Attack"
+  "attribute.loli_pickaxe.damage" : "Loli Damage Attack",
+  "chat.loli_pickaxe.chat_3": "Because in China's Kwai, someone pretended to be me. He took the video of me and my friends and released it on Kwai, which made me very angry.",
+  "item.loli_pickaxe.void_totem": "Void Totem",
+  "time.loli_pickaxe.new_day": "Another day has passed"
 }

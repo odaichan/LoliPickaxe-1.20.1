@@ -3,7 +3,6 @@ package net.daichang.loli_pickaxe.minecraft.event;
 import net.daichang.loli_pickaxe.common.register.AttributesRegister;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.Commands.*;
-import net.daichang.loli_pickaxe.util.HavenUtil.HavenUtil;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.TextUtil;
@@ -14,7 +13,6 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -99,14 +97,15 @@ public class LoliPickaxeEvent {
         Player player = e.getEntity();
         player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_1"), false);
         player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_2"), false);
+        player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_3"), false);
     }
 
     @SubscribeEvent
     public static void levelTick(TickEvent.PlayerTickEvent event){
         Level level = event.player.level();
-        if(HavenUtil.isHaven() &&  level instanceof ServerLevel server){
-            HavenUtil.setDayTime(server);
-        }
+//        if(HavenUtil.isHaven() &&  level instanceof ServerLevel server){
+//            HavenUtil.setDayTime(server);
+//        }
     }
 
     @SubscribeEvent
