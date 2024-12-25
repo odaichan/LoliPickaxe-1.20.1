@@ -15,6 +15,7 @@ import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
@@ -24,37 +25,46 @@ import java.util.List;
 import static net.daichang.loli_pickaxe.util.Util.*;
 
 public class LoliAttackUtil {
+
     public static void killEntity(LivingEntity isLoli, Entity targetEntity){
-        if (sMode && !(targetEntity instanceof Player)) {
-            DeathList.addList(targetEntity);
-            System.out.println("LoliPickaxeSuperMode: Add new entity UUID in DeathList: " + targetEntity.getUUID());
-        }
-        if(!(targetEntity instanceof Player) && classTarget) {
-            ClassTargetList.addTarget(targetEntity);
-        }
-        if(!(targetEntity instanceof Player) && remove){
-            removeEntity(targetEntity);
-            System.out.println("Removed Entity UUID ：" + targetEntity.getUUID());
-        }
-        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
-        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
-        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
-        if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)){
-            targetLiving.setHealth(0.0F);
-            Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
-            if(targetEntity instanceof WitherBoss boss){
-                boss.setNoAi(true);
+        targetEntity.gameEvent(GameEvent.ENTITY_DIE);
+        targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli)));
+        for (int attack = 0; attack <100; attack++) {
+            if (sMode && !(targetEntity instanceof Player)) {
+                DeathList.addList(targetEntity);
             }
-            if (targetLiving instanceof EnderDragon dragon){
-                dragon.dragonDeathTime = 190;
-                dragon.ambientSoundTime = -2;
-                dragon.flapTime = -2;
+            if (!(targetEntity instanceof Player) && classTarget) {
+                ClassTargetList.addTarget(targetEntity);
             }
-            if (targetLiving instanceof Player player && player.level().isClientSide() && blueScreen){
-                BlueScreenAPI.API.BlueScreen(true);
-                System.out.println("You Windows was killed by" + isLoli.getDisplayName());
-                Minecraft mc = Minecraft.getInstance();
-                Util.screen(mc);
+            if (!(targetEntity instanceof Player) && remove) {
+                removeEntity(targetEntity);
+            }
+            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
+            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
+            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
+            if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
+                targetLiving.deathTime = Util.loliDeathTime();
+                targetLiving.setHealth(0.0F);
+                targetLiving.isDeadOrDying();
+                targetLiving.hurtTime =0;
+                targetLiving.hurtDuration = 0;
+                targetLiving.invulnerableTime = 0;
+                targetLiving.invulnerableDuration = 0;
+                Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
+                if (targetEntity instanceof WitherBoss boss) {
+                    boss.setNoAi(true);
+                }
+                if (targetLiving instanceof EnderDragon dragon) {
+                    dragon.dragonDeathTime = 190;
+                    dragon.ambientSoundTime = -2;
+                    dragon.flapTime = -2;
+                }
+                if (targetLiving instanceof Player player && player.level().isClientSide() && blueScreen) {
+                    BlueScreenAPI.API.BlueScreen(true);
+                    System.out.println("You Windows was killed by" + isLoli.getDisplayName());
+                    Minecraft mc = Minecraft.getInstance();
+                    Util.screen(mc);
+                }
             }
         }
     }

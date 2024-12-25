@@ -2,8 +2,16 @@ package net.daichang.loli_pickaxe;
 
 import com.mojang.logging.LogUtils;
 import net.daichang.loli_pickaxe.common.register.*;
+import net.daichang.loli_pickaxe.minecraft.DeathList;
+import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,6 +52,17 @@ public class LoliPickaxeMod {
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event) {
             LOGGER.info("DaiChang's LoliPickaxe Mod");
+        }
+    }
+
+    @SubscribeEvent
+    public void livingDeathEvent(LivingDeathEvent e){
+        LivingEntity living = e.getEntity();
+        DamageSource source = e.getSource();
+        Entity attack = source.getEntity();
+        if (attack instanceof Player player && player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && !(living instanceof Player)) {
+            DeathList.addList(living);
+            Util.Override_DATA_HEALTH_ID(living, 0.0F);
         }
     }
 }

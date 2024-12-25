@@ -13,5 +13,7 @@
   "chat.loli_pickaxe.chat_2": "已在Github开源: https://github.com/odaichan/LoliPickaxe-1.20.1/tree/master",
   "attribute.loli_pickaxe.damage": "氪金萝莉伤害",
   "chat.loli_pickaxe.chat_3": "Because in China's Kwai, someone pretended to be me. He took the video of me and my friends and released it on Kwai, which made me very angry.",
-  "item.loli_pickaxe.void_totem": "虚空图腾"
+  "item.loli_pickaxe.void_totem": "虚空图腾",
+  "time.loli_pickaxe.new_day": "Another day has passed",
+  "command.loli_pickaxe.kick_player": "你被氪金萝莉踢出了服务器"
 }

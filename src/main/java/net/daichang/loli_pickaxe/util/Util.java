@@ -1,32 +1,34 @@
 package net.daichang.loli_pickaxe.util;
 
 import net.daichang.loli_pickaxe.LoliPickaxeMod;
-import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.network.Connection;
+import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundDisconnectPacket;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.AABB;
-import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.Comparator;
-import java.util.List;
 import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Util {
     public static boolean sMode = false;
@@ -38,6 +40,8 @@ public class Util {
     public static boolean remove = false;
 
     public static boolean canRemoval = false;
+
+    public static boolean kickPlayer = false;
 
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
@@ -93,22 +97,8 @@ public class Util {
         entity.entityData = data;
     }
 
-    public static boolean notLoli(Level level, double x, double y, double z, Entity loli){
-        Vec3 _center = new Vec3(x, y, z);
-        List<Entity> targetClass = level.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(2100.0D), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
-        for (Entity target : targetClass){
-            if (target instanceof LivingEntity){
-                if (target instanceof Player player && !(player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())))){
-                    return true;
-                }
-                return true;
-            }
-        }
-        return false;
-    }
-
     public static boolean isLoliEntity(LivingEntity l){
-        return l.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && !(l instanceof EntityLoli);
+        return l.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && !(l instanceof Player) && !(l instanceof EnderDragon);
     }
 
     public static void playAttackSound(Level level, Entity playSound){
@@ -127,5 +117,27 @@ public class Util {
     public static void screen(Minecraft mc){
         DeathScreen screen =  new DeathScreen(Component.translatable("death.attack.loli_pickaxe"), false);
         mc.setScreen(screen);
+    }
+
+    public static int loliDeathTime(){
+        final int[] deathTime = {0};
+        (new Timer()).schedule(new TimerTask() {
+            @Override
+            public void run() {
+                if (deathTime[0] <=200){
+                    ++deathTime[0];
+                }
+            }
+        }, 120L, 120L);
+        return deathTime[0];
+    }
+
+    public static void loliPickaxeKickPlayer(ServerPlayer serverPlayer, Component component){
+        serverPlayer.connection.connection.send(new ClientboundDisconnectPacket(component), PacketSendListener.thenRun(() -> serverPlayer.connection.connection.disconnect(component)));
+        serverPlayer.connection.connection.setReadOnly();
+        MinecraftServer var10000 = serverPlayer.server;
+        Connection var10001 = serverPlayer.connection.connection;
+        Objects.requireNonNull(var10001);
+        var10000.executeBlocking(var10001::handleDisconnection);
     }
 }

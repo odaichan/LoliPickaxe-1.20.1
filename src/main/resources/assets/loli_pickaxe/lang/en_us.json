@@ -14,5 +14,6 @@
   "attribute.loli_pickaxe.damage" : "Loli Damage Attack",
   "chat.loli_pickaxe.chat_3": "Because in China's Kwai, someone pretended to be me. He took the video of me and my friends and released it on Kwai, which made me very angry.",
   "item.loli_pickaxe.void_totem": "Void Totem",
-  "time.loli_pickaxe.new_day": "Another day has passed"
+  "time.loli_pickaxe.new_day": "Another day has passed",
+  "command.loli_pickaxe.kick_player": "You are kicked by Loli Pickaxe"
 }

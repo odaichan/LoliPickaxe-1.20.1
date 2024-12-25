@@ -1,13 +1,13 @@
 package net.daichang.loli_pickaxe.common.items.tools;
 
+import net.daichang.loli_pickaxe.common.items.IToolItem;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemSmallLoliPickaxe extends Item {
+public class ItemSmallLoliPickaxe extends IToolItem {
     public ItemSmallLoliPickaxe() {
         super(new Properties().fireResistant().stacksTo(1));
     }

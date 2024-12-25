@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.common.items.tools;
 
+import net.daichang.loli_pickaxe.common.items.IToolItem;
 import net.daichang.loli_pickaxe.util.HavenUtil.HavenUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -7,11 +8,10 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class ItemMadeInHeaven extends Item {
+public class ItemMadeInHeaven extends IToolItem {
     public ItemMadeInHeaven() {
         super(new Properties());
     }

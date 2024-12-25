@@ -24,6 +24,7 @@
     "TimeStopMixin$ServerFunctionManagerMixin",
     "TimeStopMixin$ServerLevelMixin",
     "TimeStopMixin$WorldBorderMixin",
+    "command.CommandMixins$KillMixin",
     "sword_blocks.UseAnimMixin",
     "timer.MixinMadeInHaven$MixinLevel"
   ],

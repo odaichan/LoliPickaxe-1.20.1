@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.common.items.tools;
 
+import net.daichang.loli_pickaxe.common.items.IToolItem;
 import net.daichang.loli_pickaxe.util.handler.TimeDataHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -8,7 +9,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
-public class ItemTimeClock extends Item {
+public class ItemTimeClock extends IToolItem {
     public ItemTimeClock() {
         super(new Properties());
     }

@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.common.register;
 
+import net.daichang.loli_pickaxe.common.items.IToolItem;
 import net.daichang.loli_pickaxe.common.items.addons.ItemSuperItem;
 import net.daichang.loli_pickaxe.common.items.addons.ItemTest;
 import net.daichang.loli_pickaxe.common.items.items.ItemDeath;
@@ -25,6 +26,7 @@ public class ItemRegister {
     public static final RegistryObject<Item> SuperItem;
     public static final RegistryObject<Item> DeathItem;
     public static final RegistryObject<Item> VoidTotemItem;
+    public static final RegistryObject<Item> NULLItem;
     static {
         //Tools
         LoliPickaxe = items.register("loli_pickaxe", ItemLoliPickaxe::new);
@@ -39,5 +41,6 @@ public class ItemRegister {
         //addon
         SuperItem = items.register("super_test", ItemSuperItem::new);
         DeathItem = items.register("death", ItemDeath::new);
+        NULLItem = items.register("null", ()-> new IToolItem(new Item.Properties()));
     }
 }

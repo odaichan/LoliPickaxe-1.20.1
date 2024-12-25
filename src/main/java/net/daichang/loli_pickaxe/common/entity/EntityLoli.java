@@ -23,7 +23,6 @@ import net.minecraft.world.entity.ai.goal.RandomLookAroundGoal;
 import net.minecraft.world.entity.ai.goal.RandomStrollGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,6 +37,8 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class EntityLoli extends Monster{
+    private static final float loliHealth = 20.0F;
+    private static final int loliDeathTime = 0;
     private static final EntityDataAccessor<Integer> DATA_TARGET_A;
     private static final EntityDataAccessor<Integer> DATA_TARGET_B;
     private static final EntityDataAccessor<Integer> DATA_TARGET_C;
@@ -53,8 +54,9 @@ public class EntityLoli extends Monster{
         this.hurtTime = -2;
         this.xpReward = Integer.MAX_VALUE;
         this.isBaby();
-        this.dead = false;
         this.invulnerableTime = -2;
+        this.heal(loliHealth);
+        this.deathTime = loliDeathTime;
     }
 
     public EntityLoli(EntityType<? extends Monster> loli, Level world) {
@@ -69,12 +71,12 @@ public class EntityLoli extends Monster{
 
     @Override
     public float getHealth() {
-        return 20;
+        return loliHealth;
     }
 
     @Override
     public void setHealth(float p_21154_) {
-        super.setHealth(20);
+        super.setHealth(loliHealth);
     }
 
     @Override
@@ -83,21 +85,9 @@ public class EntityLoli extends Monster{
         Level level = this.level();
         double a = new Random().nextDouble(0.1, 0.5);
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
-            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli)&& entity.isAlive() && !(entity instanceof Player)) {
+            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player)) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
                 DeathList.addList(livingEntity);
-                livingEntity.hurtTime = 0;
-                livingEntity.getBrain().clearMemories();
-                livingEntity.getBrain().removeAllBehaviors();
-                for (int abc = 0; abc <= 20; abc ++){
-                    livingEntity.deathTime = abc;
-                }
-                if (livingEntity instanceof EnderDragon dragon){
-                    for (int dragonDeath = 0;dragonDeath <= 200; dragonDeath++){
-                        dragon.dragonDeathTime = dragonDeath;
-                        dragon.hurtTime = 0;
-                    }
-                }
                 this.setPos(livingEntity.getX() + a, livingEntity.getY() + a, livingEntity.getZ() + a);
             }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);
@@ -119,7 +109,7 @@ public class EntityLoli extends Monster{
 
     public static AttributeSupplier.Builder createAttributes() {
         return Mob.createMobAttributes()
-                .add(Attributes.MAX_HEALTH, 20.0D)
+                .add(Attributes.MAX_HEALTH, loliHealth)
                 .add(Attributes.MOVEMENT_SPEED, 0.7D)
                 .add(Attributes.ATTACK_DAMAGE, Double.POSITIVE_INFINITY)
                 .add(Attributes.ATTACK_KNOCKBACK, 0.1D)
@@ -226,5 +216,13 @@ public class EntityLoli extends Monster{
     @Override
     public @NotNull Brain<?> getBrain() {
         return brain;
+    }
+
+    @Override
+    protected void tickDeath() {
+        deathTime = loliDeathTime;
+        setHealth(loliHealth);
+        heal(loliHealth);
+        super.tickDeath();
     }
 }
