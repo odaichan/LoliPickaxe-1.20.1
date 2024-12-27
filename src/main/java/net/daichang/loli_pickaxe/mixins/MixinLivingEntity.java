@@ -33,7 +33,7 @@ public abstract class MixinLivingEntity {
     @Inject(method = "getHealth", at = @At("RETURN"), cancellable = true)
     private void getHealth(CallbackInfoReturnable<Float> cir){
         if(DeathList.isList(loli_pickaxe$living) && sMode){
-            cir.setReturnValue(0.0f);
+            cir.setReturnValue(Float.NEGATIVE_INFINITY);
         }
         if (loli_pickaxe$living instanceof Player && ((Player) loli_pickaxe$living).getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
             cir.setReturnValue(loli_pickaxe$living.getMaxHealth());

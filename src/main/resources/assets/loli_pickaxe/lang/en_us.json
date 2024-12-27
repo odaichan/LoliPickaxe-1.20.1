@@ -21,5 +21,8 @@
   "list.loli_pickaxe.blue_screen": "Blue Screen",
   "list.loli_pickaxe.remove": "Entity Remove",
   "list.loli_pickaxe.kick_player": "Kick Player",
-  "list.loli_pickaxe.reverse_injury": "Reverse Injury"
+  "list.loli_pickaxe.reverse_injury": "Reverse Injury",
+  "list.loli_pickaxe.daichang": "LoliPickaxe Mod By DaiChang",
+  "list.loli_pickaxe.shift": "Press shift to display the author",
+  "list.loli_pickaxe.display_fluid_border": "Display Fluid Border"
 }

@@ -3,14 +3,14 @@ package net.daichang.loli_pickaxe.util;
 import net.daichang.loli_pickaxe.api.BlueScreenAPI;
 import net.daichang.loli_pickaxe.minecraft.ClassTargetList;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
-import net.daichang.loli_pickaxe.util.core.EntityCategory;
+import net.daichang.loli_pickaxe.util.core.enums.EntityDeleteReasonManager;
+import net.daichang.loli_pickaxe.util.core.enums.IRemove;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -33,45 +33,44 @@ public class LoliAttackUtil {
     public static void killEntity(LivingEntity isLoli, Entity targetEntity){
         targetEntity.gameEvent(GameEvent.ENTITY_DIE);
         targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli)));
-        for (int attack = 0; attack <100; attack++) {
-            if (sMode && !(targetEntity instanceof Player)) {
-                DeathList.addList(targetEntity);
+        if (sMode && !(targetEntity instanceof Player)) {
+            DeathList.addList(targetEntity);
+        }
+        if (!(targetEntity instanceof Player) && classTarget) {
+            ClassTargetList.addTarget(targetEntity);
+        }
+        if (!(targetEntity instanceof Player) && remove) {
+            removeEntity(targetEntity);
+        }
+        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
+        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
+        targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
+        if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
+            targetLiving.setHealth(0.0F);
+            targetLiving.isDeadOrDying();
+            targetLiving.hurtTime =0;
+            targetLiving.hurtDuration = 0;
+            targetLiving.invulnerableTime = 0;
+            targetLiving.invulnerableDuration = 0;
+            targetLiving.heal(Float.NEGATIVE_INFINITY);
+            Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
+            if (targetEntity instanceof WitherBoss boss) {
+                boss.setNoAi(true);
             }
-            if (!(targetEntity instanceof Player) && classTarget) {
-                ClassTargetList.addTarget(targetEntity);
+            if (targetLiving instanceof EnderDragon dragon) {
+                dragon.dragonDeathTime = 190;
+                dragon.ambientSoundTime = -2;
+                dragon.flapTime = -2;
             }
-            if (!(targetEntity instanceof Player) && remove) {
-                removeEntity(targetEntity);
-            }
-            if (!(targetEntity instanceof Player)){
-                Util.setCategory(targetEntity, EntityCategory.notLoliEntity);
-            }
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
-            if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
-                targetLiving.deathTime = Util.loliDeathTime();
-                targetLiving.setHealth(0.0F);
-                targetLiving.isDeadOrDying();
-                targetLiving.hurtTime =0;
-                targetLiving.hurtDuration = 0;
-                targetLiving.invulnerableTime = 0;
-                targetLiving.invulnerableDuration = 0;
-                targetLiving.heal(Float.NEGATIVE_INFINITY);
-                Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
-                if (targetEntity instanceof WitherBoss boss) {
-                    boss.setNoAi(true);
-                }
-                if (targetLiving instanceof EnderDragon dragon) {
-                    dragon.dragonDeathTime = 190;
-                    dragon.ambientSoundTime = -2;
-                    dragon.flapTime = -2;
-                }
-                if (targetLiving instanceof Player player && player.level().isClientSide() && blueScreen) {
+            if (targetLiving instanceof Player player) {
+                if (player.level().isClientSide() && blueScreen) {
                     BlueScreenAPI.API.BlueScreen(true);
                     System.out.println("You Windows was killed by" + isLoli.getDisplayName());
                     Minecraft mc = Minecraft.getInstance();
                     Util.screen(mc);
+                }
+                if (player instanceof ServerPlayer serverPlayer && kickPlayer){
+                    Util.loliPickaxeKickPlayer(serverPlayer, Component.translatable("command.loli_pickaxe.kick_player"));
                 }
             }
         }
@@ -93,23 +92,12 @@ public class LoliAttackUtil {
     }
 
     public static void removeEntity(Entity entity){
-        Entity.RemovalReason removalReason = Entity.RemovalReason.KILLED;
+        Entity.RemovalReason removalReason = Entity.RemovalReason.UNLOADED_TO_CHUNK;
+        IRemove deleteReasonManager = IRemove.LOLI_PLAYER_KILLED;
         entity.setRemoved(removalReason);
         entity.remove(removalReason);
         entity.onClientRemoval();
         entity.onRemovedFromWorld();
-        Level level = entity.level();
-        if (level instanceof ServerLevel serverLevel){
-            try {
-                serverLevel.getEntities().get(entity.getId()).remove(removalReason);
-                serverLevel.getEntities().get(entity.getUUID()).remove(removalReason);
-            } catch (Exception ignored) {
-            }
-        }else {
-            ClientLevel clientLevel = (ClientLevel) level;
-            clientLevel.removeEntity(entity.getId(), removalReason);
-            clientLevel.getEntity(entity.getId()).remove(removalReason);
-            clientLevel.entityStorage.getEntityGetter().get(entity.getUUID()).remove(removalReason);
-        }
+        EntityDeleteReasonManager.setDeleteReason(entity, deleteReasonManager);
     }
 }

@@ -46,6 +46,10 @@ public class Util {
 
     public static boolean reverseInjury = true;
 
+    public static boolean displayFluidBorder = false;
+
+    public static boolean lquidWalk = false;
+
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
     }
@@ -127,7 +131,7 @@ public class Util {
                     ++deathTime[0];
                 }
             }
-        }, 120L, 120L);
+        }, 30L, 30L);
         return deathTime[0];
     }
 

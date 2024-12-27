@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.daichang.loli_pickaxe.common.register.AttributesRegister;
+import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -41,6 +42,12 @@ public class ItemTest extends Item {
             loli.onRemovedFromWorld();
             loli.remove(Entity.RemovalReason.KILLED);
             loli.setRemoved(Entity.RemovalReason.KILLED);
+        }else {
+            if (!(entity instanceof Player)){
+                DeathList.addList(entity);
+            }else {
+                Util.Override_DATA_HEALTH_ID(entity, 0.0F);
+            }
         }
         return super.onLeftClickEntity(stack, player, entity);
     }

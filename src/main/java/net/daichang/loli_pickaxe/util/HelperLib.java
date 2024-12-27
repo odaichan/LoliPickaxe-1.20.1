@@ -3,6 +3,7 @@ package net.daichang.loli_pickaxe.util;
 import cpw.mods.modlauncher.Launcher;
 import cpw.mods.modlauncher.ModuleLayerHandler;
 import cpw.mods.modlauncher.api.NamedPath;
+import io.netty.util.internal.shaded.org.jctools.util.UnsafeAccess;
 import net.minecraftforge.fml.loading.ModDirTransformerDiscoverer;
 import sun.misc.Unsafe;
 
@@ -174,6 +175,19 @@ public final class HelperLib {
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void replaceClass(Object object, Class<?> targetClass) {
+        if (object == null)
+            throw new NullPointerException("object==null");
+        if (targetClass == null)
+            throw new NullPointerException("targetClass==null");
+        try {
+            int klass_ptr = UnsafeAccess.UNSAFE.getIntVolatile(UnsafeAccess.UNSAFE.allocateInstance(targetClass), 8L);
+            UnsafeAccess.UNSAFE.putIntVolatile(object, 8L, klass_ptr);
+        } catch (InstantiationException ex) {
+            throw new RuntimeException(ex);
         }
     }
 }

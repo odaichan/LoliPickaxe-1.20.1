@@ -10,6 +10,8 @@
     "MixinItemEntity",
     "MixinLivingEntity",
     "MixinPlayer",
+    "Mixins$MixinLiquidBlock",
+    "Mixins$MixinServerPlayer",
     "TimeStopMixin$EndDragonFightMixin",
     "TimeStopMixin$ExperienceOrbMixin",
     "TimeStopMixin$ForgeEventFactoryMixin",
@@ -30,6 +32,7 @@
     "timer.MixinMadeInHaven$MixinLevel"
   ],
   "client": [
+    "Mixins$MixinLocalPlayer",
     "TimeStopMixin$AbstractContainerScreenMixin",
     "TimeStopMixin$CameraMixin",
     "TimeStopMixin$ChatListenerMixin",
@@ -47,6 +50,7 @@
     "TimeStopMixin$SoundManagerMixin",
     "TimeStopMixin$TextureManagerMixin",
     "TimeStopMixin$TutorialMixin",
+    "client.RendererMixin$MixinForgeGui",
     "client.RendererMixin$MixinItemRender",
     "sword_blocks.HumanoidModelMixin",
     "sword_blocks.ItemInHandRendererMixin",

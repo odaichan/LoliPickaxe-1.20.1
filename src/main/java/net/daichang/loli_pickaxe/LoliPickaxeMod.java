@@ -1,18 +1,20 @@
 package net.daichang.loli_pickaxe;
 
 import com.mojang.logging.LogUtils;
-import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.*;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.core.BlockPos;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
@@ -75,15 +77,19 @@ public class LoliPickaxeMod {
 
     @SubscribeEvent
     public void leftClickBlock(PlayerInteractEvent.LeftClickBlock e){
-        int breakRange = Config.breakRange;
         Player player = e.getEntity();
         Level level = e.getLevel();
-        BlockPos pos = new BlockPos(e.getPos().getX() + breakRange, e.getPos().getY() + breakRange, e.getPos().getZ() + breakRange);
-        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && player instanceof ServerPlayer serverPlayer && !serverPlayer.gameMode.isCreative()){
-            level.destroyBlock(pos, true, serverPlayer);
+        BlockPos pos = e.getPos();
+        BlockState state = level.getBlockState(pos);
+        Block block = state.getBlock();
+        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
+            level.destroyBlock(pos, true, player);
 //            for (int itemCount = 1; itemCount <=64; itemCount++ ) {
 //                Block.dropResources(level.getBlockState(pos), level, BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()), null);
 //            }
+            if (block instanceof LiquidBlock){
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0);
+            }
         }
     }
 }

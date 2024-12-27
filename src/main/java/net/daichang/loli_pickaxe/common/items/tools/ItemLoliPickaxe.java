@@ -5,6 +5,8 @@ import com.google.common.collect.Multimap;
 import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -35,15 +37,16 @@ public class ItemLoliPickaxe extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
     {
+        Util.playAttackSound(level, player);
         if (player.isShiftKeyDown()) {
             LoliAttackUtil.KillEntitle(level, player.getX(), player.getY(), player.getX(), player);
-            Util.playAttackSound(level, player);
-            if  (level.isClientSide()){
-            }
         }else {
             Config.breakRange++;
-            if (Config.breakRange >5){
+            if (Config.breakRange>5){
                 Config.breakRange = 0;
+            }
+            if  (level.isClientSide()){
+                player.displayClientMessage(Component.literal("挖掘范围更改为" + Config.breakRange + "*" + Config.breakRange +"*"+Config.breakRange), false);
             }
         }
         return super.use(level, player, hand);
@@ -79,12 +82,18 @@ public class ItemLoliPickaxe extends Item {
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> list, TooltipFlag p_41424_) {
         int breakRange = Config.breakRange + 2;
         list.add(Component.literal("挖掘范围为" +breakRange+"*" + breakRange +"*"+breakRange));
-        if (Util.sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod"));
-        if (Util.classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target"));
-        if (Util.blueScreen) list.add(Component.translatable("list.loli_pickaxe.blue_screen"));
-        if (Util.remove) list.add(Component.translatable("list.loli_pickaxe.remove"));
-        if (Util.kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player"));
-        if (Util.reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury"));
+        if (Util.sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod").withStyle(ChatFormatting.GRAY));
+        if (Util.classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target").withStyle(ChatFormatting.GRAY));
+        if (Util.blueScreen) list.add(Component.translatable("list.loli_pickaxe.blue_screen").withStyle(ChatFormatting.GRAY));
+        if (Util.remove) list.add(Component.translatable("list.loli_pickaxe.remove").withStyle(ChatFormatting.GRAY));
+        if (Util.kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player").withStyle(ChatFormatting.GRAY));
+        if (Util.reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury").withStyle(ChatFormatting.GRAY));
+        if (Util.displayFluidBorder) list.add(Component.translatable("list.loli_pickaxe.display_fluid_border").withStyle(ChatFormatting.GRAY));
+        if (Screen.hasShiftDown()){
+            list.add(Component.translatable("list.loli_pickaxe.daichang").withStyle(ChatFormatting.DARK_GRAY));
+        }else {
+            list.add(Component.translatable("list.loli_pickaxe.shift").withStyle(ChatFormatting.DARK_GRAY));
+        }
         super.appendHoverText(p_41421_, p_41422_, list, p_41424_);
     }
 }

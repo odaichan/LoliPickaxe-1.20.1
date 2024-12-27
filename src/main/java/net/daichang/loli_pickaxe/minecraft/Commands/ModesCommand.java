@@ -8,6 +8,7 @@ import net.daichang.loli_pickaxe.minecraft.Commands.Modes.KickPlayerCommands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
+import static net.daichang.loli_pickaxe.util.Util.displayFluidBorder;
 import static net.daichang.loli_pickaxe.util.Util.remove;
 
 public class ModesCommand {
@@ -18,6 +19,7 @@ public class ModesCommand {
                 .then(ClassTargetCommand.register())
                 .then(RevmoeEntityCommand.register())
                 .then(KickPlayerCommands.register())
+                .then(DisplayFluidBorderCommand.register())
                 ;
     }
 
@@ -26,6 +28,15 @@ public class ModesCommand {
             return Commands.literal("removeEntity").executes(cs -> {
                 remove = !remove;
               return 0;
+            });
+        }
+    }
+
+    static class DisplayFluidBorderCommand{
+        static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){
+            return Commands.literal("displayFluidBorder").executes(cs -> {
+                displayFluidBorder = !displayFluidBorder;
+                return 0;
             });
         }
     }

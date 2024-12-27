@@ -7,7 +7,6 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
-import net.daichang.loli_pickaxe.util.core.EntityCategory;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -28,10 +27,12 @@ import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.network.NetworkHooks;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Random;
@@ -83,14 +84,16 @@ public class EntityLoli extends Monster{
     @Override
     public void tick() {
         super.tick();
-        Util.setCategory(this, EntityCategory.isLoliEntity);
         Level level = this.level();
         double a = new Random().nextDouble(0.1, 0.5);
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
             if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player)) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
                 DeathList.addList(livingEntity);
-                Util.setCategory(livingEntity, EntityCategory.notLoliEntity);
+                if (livingEntity.getHealth() == 0){
+                    livingEntity.isDeadOrDying();
+                    livingEntity.heal(-100.0F);
+                }
                 this.setPos(livingEntity.getX() + a, livingEntity.getY() + a, livingEntity.getZ() + a);
             }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);
@@ -100,8 +103,6 @@ public class EntityLoli extends Monster{
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(200D))){
             if(entity instanceof LivingEntity living && !Util.isLoliEntity(living) && !(entity instanceof Player)){
                 this.setTarget(living);
-            } else if (entity instanceof Player player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))) {
-                this.setTarget(player);
             }
         }
         this.isAlive();
@@ -226,6 +227,15 @@ public class EntityLoli extends Monster{
         deathTime = loliDeathTime;
         setHealth(loliHealth);
         heal(loliHealth);
-        super.tickDeath();
+    }
+
+    @Override
+    public @Nullable LivingEntity getTarget() {
+        Level level = this.level();
+        Vec3 vec3 = new Vec3(getX(), getY(), getZ());
+        for (LivingEntity entity : level.getEntitiesOfClass(LivingEntity.class, (new AABB(vec3, vec3)).inflate(30))){
+            return entity;
+        }
+        return super.getTarget();
     }
 }

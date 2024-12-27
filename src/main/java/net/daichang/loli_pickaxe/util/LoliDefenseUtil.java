@@ -8,6 +8,8 @@ import net.minecraft.world.entity.player.Player;
 
 public class LoliDefenseUtil {
     public static void loliDefense(Player player){
+        player.deathTime = -2;
+        player.hurtTime = -2;
         player.setHealth(player.getMaxHealth());
         player.setAirSupply(300);
         player.clearFire();
@@ -16,7 +18,6 @@ public class LoliDefenseUtil {
         player.setTicksFrozen(-2);
         Abilities abilities = player.abilities;
         abilities.mayfly = true;
-        abilities.invulnerable = true;
         player.onUpdateAbilities();
         for (String s : player.getTags()) player.removeTag(s);
     }
