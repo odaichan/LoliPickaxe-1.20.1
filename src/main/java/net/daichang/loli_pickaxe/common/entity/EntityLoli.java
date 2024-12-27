@@ -7,6 +7,7 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
+import net.daichang.loli_pickaxe.util.core.EntityCategory;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.syncher.EntityDataAccessor;
@@ -82,12 +83,14 @@ public class EntityLoli extends Monster{
     @Override
     public void tick() {
         super.tick();
+        Util.setCategory(this, EntityCategory.isLoliEntity);
         Level level = this.level();
         double a = new Random().nextDouble(0.1, 0.5);
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
             if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player)) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
                 DeathList.addList(livingEntity);
+                Util.setCategory(livingEntity, EntityCategory.notLoliEntity);
                 this.setPos(livingEntity.getX() + a, livingEntity.getY() + a, livingEntity.getZ() + a);
             }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);

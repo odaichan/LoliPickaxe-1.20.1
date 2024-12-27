@@ -26,19 +26,9 @@ public class SnowSwordLaunchPluginService implements ILaunchPluginService {
         for (MethodNode methodNode : classNode.methods) {
             for (AbstractInsnNode abstractInsnNode : methodNode.instructions) {
                 if (abstractInsnNode instanceof MethodInsnNode mi && mi.getOpcode() != Opcodes.INVOKESPECIAL) {
-                    switch (mi.name) {
-                        case "m_21223_" -> {
-                            rMethod(mi, "getHealth", "(Lnet/minecraft/world/entity/LivingEntity;)F");
-                            writer = true;
-                        }
-                        case "m_6084_" -> {
-                            rMethod(mi, "isAlive", "(Lnet/minecraft/world/entity/Entity;)Z");
-                            writer = true;
-                        }
-                        case "m_21224_" -> {
-                            rMethod(mi, "isDeadOrDying", "(Lnet/minecraft/world/entity/LivingEntity;)Z");
-                            writer = true;
-                        }
+                    if (mi.name.equals("m_21223_")) {
+                        rMethod(mi, "getHealth", "(Lnet/minecraft/world/entity/LivingEntity;)F");
+                        writer = true;
                     }
                 }
                 if (abstractInsnNode instanceof FieldInsnNode fi) {

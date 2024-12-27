@@ -1,17 +1,22 @@
 package net.daichang.loli_pickaxe;
 
 import com.mojang.logging.LogUtils;
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.*;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -20,8 +25,10 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 
+import static net.daichang.loli_pickaxe.LoliPickaxeMod.MOD_ID;
+
 // The value here should match an entry in the META-INF/mods.toml file
-@Mod("loli_pickaxe")
+@Mod(MOD_ID)
 public class LoliPickaxeMod {
     public static final String MOD_ID = "loli_pickaxe";
 
@@ -63,6 +70,20 @@ public class LoliPickaxeMod {
         if (attack instanceof Player player && player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && !(living instanceof Player)) {
             DeathList.addList(living);
             Util.Override_DATA_HEALTH_ID(living, 0.0F);
+        }
+    }
+
+    @SubscribeEvent
+    public void leftClickBlock(PlayerInteractEvent.LeftClickBlock e){
+        int breakRange = Config.breakRange;
+        Player player = e.getEntity();
+        Level level = e.getLevel();
+        BlockPos pos = new BlockPos(e.getPos().getX() + breakRange, e.getPos().getY() + breakRange, e.getPos().getZ() + breakRange);
+        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && player instanceof ServerPlayer serverPlayer && !serverPlayer.gameMode.isCreative()){
+            level.destroyBlock(pos, true, serverPlayer);
+//            for (int itemCount = 1; itemCount <=64; itemCount++ ) {
+//                Block.dropResources(level.getBlockState(pos), level, BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()), null);
+//            }
         }
     }
 }

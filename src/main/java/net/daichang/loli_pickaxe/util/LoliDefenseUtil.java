@@ -3,6 +3,7 @@ package net.daichang.loli_pickaxe.util;
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Abilities;
 import net.minecraft.world.entity.player.Player;
 
 public class LoliDefenseUtil {
@@ -13,6 +14,10 @@ public class LoliDefenseUtil {
         player.getFoodData().setFoodLevel(Integer.MAX_VALUE);
         player.getFoodData().setSaturation(Float.MAX_VALUE);
         player.setTicksFrozen(-2);
+        Abilities abilities = player.abilities;
+        abilities.mayfly = true;
+        abilities.invulnerable = true;
+        player.onUpdateAbilities();
         for (String s : player.getTags()) player.removeTag(s);
     }
 

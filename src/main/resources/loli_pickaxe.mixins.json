@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "loli_pickaxe.refmap.json",
   "mixins": [
+    "AbilitiesMixin",
     "MixinEntity",
     "MixinItemEntity",
     "MixinLivingEntity",

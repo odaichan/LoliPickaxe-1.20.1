@@ -4,6 +4,7 @@ import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import net.daichang.loli_pickaxe.minecraft.Commands.Modes.CanBlueScreen;
 import net.daichang.loli_pickaxe.minecraft.Commands.Modes.ClassTargetCommand;
+import net.daichang.loli_pickaxe.minecraft.Commands.Modes.KickPlayerCommands;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
@@ -16,6 +17,7 @@ public class ModesCommand {
                 .then(CanBlueScreen.register())
                 .then(ClassTargetCommand.register())
                 .then(RevmoeEntityCommand.register())
+                .then(KickPlayerCommands.register())
                 ;
     }
 

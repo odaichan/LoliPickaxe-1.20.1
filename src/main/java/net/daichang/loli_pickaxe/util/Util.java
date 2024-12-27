@@ -2,6 +2,7 @@ package net.daichang.loli_pickaxe.util;
 
 import net.daichang.loli_pickaxe.LoliPickaxeMod;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
+import net.daichang.loli_pickaxe.util.core.EntityCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
 import net.minecraft.network.Connection;
@@ -42,6 +43,8 @@ public class Util {
     public static boolean canRemoval = false;
 
     public static boolean kickPlayer = false;
+
+    public static boolean reverseInjury = true;
 
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
@@ -110,10 +113,6 @@ public class Util {
         }
     }
 
-    public boolean canRemoval() {
-        return canRemoval;
-    }
-
     public static void screen(Minecraft mc){
         DeathScreen screen =  new DeathScreen(Component.translatable("death.attack.loli_pickaxe"), false);
         mc.setScreen(screen);
@@ -139,5 +138,21 @@ public class Util {
         Connection var10001 = serverPlayer.connection.connection;
         Objects.requireNonNull(var10001);
         var10000.executeBlocking(var10001::handleDisconnection);
+    }
+
+    public static EntityCategory getCategory(Entity entity){
+        try {
+            return HelperLib.getFieldValue(entity.getUUID(), "entityCategory", EntityCategory.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void setCategory(Entity entity, EntityCategory info){
+        try {
+            HelperLib.setFieldValue(entity.getUUID(), "entityCategory", info);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }

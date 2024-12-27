@@ -2,6 +2,7 @@ package net.daichang.loli_pickaxe.common.items.tools;
 
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.network.chat.Component;
@@ -25,8 +26,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static net.daichang.loli_pickaxe.util.Util.*;
-
 public class ItemLoliPickaxe extends Item {
     public ItemLoliPickaxe() {
         super(new Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant());
@@ -34,9 +33,19 @@ public class ItemLoliPickaxe extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
-        LoliAttackUtil.KillEntitle(level, player.getX(), player.getY(), player.getX(), player);
-        Util.playAttackSound(level, player);
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
+    {
+        if (player.isShiftKeyDown()) {
+            LoliAttackUtil.KillEntitle(level, player.getX(), player.getY(), player.getX(), player);
+            Util.playAttackSound(level, player);
+            if  (level.isClientSide()){
+            }
+        }else {
+            Config.breakRange++;
+            if (Config.breakRange >5){
+                Config.breakRange = 0;
+            }
+        }
         return super.use(level, player, hand);
     }
 
@@ -68,10 +77,14 @@ public class ItemLoliPickaxe extends Item {
 
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> list, TooltipFlag p_41424_) {
-        list.add(Component.literal("蓝屏打击：" + blueScreen));
-        list.add(Component.literal("灵魂打击：" + sMode));
-        list.add(Component.literal("次元攻击：" + classTarget));
-        list.add(Component.literal("实体删除：" + remove));
+        int breakRange = Config.breakRange + 2;
+        list.add(Component.literal("挖掘范围为" +breakRange+"*" + breakRange +"*"+breakRange));
+        if (Util.sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod"));
+        if (Util.classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target"));
+        if (Util.blueScreen) list.add(Component.translatable("list.loli_pickaxe.blue_screen"));
+        if (Util.remove) list.add(Component.translatable("list.loli_pickaxe.remove"));
+        if (Util.kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player"));
+        if (Util.reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury"));
         super.appendHoverText(p_41421_, p_41422_, list, p_41424_);
     }
 }
