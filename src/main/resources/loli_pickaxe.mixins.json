@@ -10,6 +10,7 @@
     "MixinItemEntity",
     "MixinLivingEntity",
     "MixinPlayer",
+    "Mixins$MixinASMEventHandler",
     "Mixins$MixinLiquidBlock",
     "Mixins$MixinServerPlayer",
     "TimeStopMixin$EndDragonFightMixin",

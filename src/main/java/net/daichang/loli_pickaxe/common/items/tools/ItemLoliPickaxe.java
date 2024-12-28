@@ -22,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.common.MinecraftForge;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -35,8 +36,7 @@ public class ItemLoliPickaxe extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand)
-    {
+    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
         Util.playAttackSound(level, player);
         if (player.isShiftKeyDown()) {
             LoliAttackUtil.KillEntitle(level, player.getX(), player.getY(), player.getX(), player);
@@ -81,6 +81,7 @@ public class ItemLoliPickaxe extends Item {
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> list, TooltipFlag p_41424_) {
         int breakRange = Config.breakRange + 2;
+        double breakRanges = Config.breakBlockRange;
         list.add(Component.literal("挖掘范围为" +breakRange+"*" + breakRange +"*"+breakRange));
         if (Util.sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod").withStyle(ChatFormatting.GRAY));
         if (Util.classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target").withStyle(ChatFormatting.GRAY));
@@ -89,11 +90,29 @@ public class ItemLoliPickaxe extends Item {
         if (Util.kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player").withStyle(ChatFormatting.GRAY));
         if (Util.reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury").withStyle(ChatFormatting.GRAY));
         if (Util.displayFluidBorder) list.add(Component.translatable("list.loli_pickaxe.display_fluid_border").withStyle(ChatFormatting.GRAY));
+        if (Util.forcedExcavation) list.add(Component.translatable("list.loli_pickaxe.forced_excavation").withStyle(ChatFormatting.GRAY));
+        if (Util.clearInventory) list.add(Component.translatable("list.loli_pickaxe.clear_inventory").withStyle(ChatFormatting.GRAY));
+        if (Util.breakRange) list.add(Component.literal("挖掘距离："+breakRanges).withStyle(ChatFormatting.GRAY));
         if (Screen.hasShiftDown()){
             list.add(Component.translatable("list.loli_pickaxe.daichang").withStyle(ChatFormatting.DARK_GRAY));
         }else {
             list.add(Component.translatable("list.loli_pickaxe.shift").withStyle(ChatFormatting.DARK_GRAY));
         }
         super.appendHoverText(p_41421_, p_41422_, list, p_41424_);
+    }
+
+    @Override
+    public float getDestroySpeed(ItemStack p_41425_, BlockState p_41426_) {
+        return Float.POSITIVE_INFINITY;
+    }
+
+    @Override
+    public boolean isCorrectToolForDrops(BlockState p_41450_) {
+        return true;
+    }
+
+    @Override
+    public int getEnchantmentValue(ItemStack stack) {
+        return Integer.MAX_VALUE;
     }
 }

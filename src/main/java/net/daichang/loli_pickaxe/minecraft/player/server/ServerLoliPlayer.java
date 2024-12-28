@@ -1,8 +1,10 @@
 package net.daichang.loli_pickaxe.minecraft.player.server;
 
 import com.mojang.authlib.GameProfile;
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
+import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,6 +57,15 @@ public class ServerLoliPlayer extends ServerPlayer {
             return false;
         }else {
             return super.hurt(p_108662_, p_108663_);
+        }
+    }
+
+    @Override
+    public double getBlockReach() {
+        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.breakRange){
+            return Config.breakBlockRange;
+        }else {
+            return super.getBlockReach();
         }
     }
 }

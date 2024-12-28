@@ -24,5 +24,7 @@
   "list.loli_pickaxe.reverse_injury": "反伤",
   "list.loli_pickaxe.daichang": "带长复刻的氪金萝莉",
   "list.loli_pickaxe.shift": "按下 Shift 键以显示作者",
-  "list.loli_pickaxe.display_fluid_border": "显示流体边框"
+  "list.loli_pickaxe.display_fluid_border": "显示流体边框",
+  "list.loli_pickaxe.forced_excavation": "强制挖掘",
+  "list.loli_pickaxe.clear_inventory": "清空玩家背包"
 }

@@ -9,8 +9,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
@@ -19,6 +24,9 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.eventbus.ASMEventHandler;
+import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.At;
@@ -102,6 +110,30 @@ public class Mixins {
                 return Shapes.block();
             }else {
                 return Shapes.empty();
+            }
+        }
+    }
+    
+    @Mixin(value = {ASMEventHandler.class}, priority = 2147483647, remap = false)
+    public static class MixinASMEventHandler{
+        @Inject(method = "invoke", at= @At("RETURN"))
+        private void invoke(Event event, CallbackInfo ci){
+            if (event instanceof PlayerInteractEvent.LeftClickBlock){
+                PlayerInteractEvent.LeftClickBlock e = (PlayerInteractEvent.LeftClickBlock) event;
+                Player player = e.getEntity();
+                Level level = e.getLevel();
+                BlockPos pos = e.getPos();
+                BlockState state = level.getBlockState(pos);
+                Block block = state.getBlock();
+                if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.forcedExcavation){
+                    ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(level.getBlockState(pos).getBlock())));
+                    level.addFreshEntity(item);
+                    item.setPickUpDelay(0);
+                    level.destroyBlock(pos, false, player);
+                    if (block instanceof LiquidBlock){
+                        level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0);
+                    }
+                }
             }
         }
     }

@@ -1,18 +1,16 @@
 package net.daichang.loli_pickaxe.minecraft.event;
 
-import net.daichang.loli_pickaxe.common.register.AttributesRegister;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.Commands.*;
+import net.daichang.loli_pickaxe.util.HavenUtil.HavenUtil;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.TextUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.commands.Commands;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -24,7 +22,6 @@ import net.minecraftforge.client.event.RenderPlayerEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -103,17 +100,8 @@ public class LoliPickaxeEvent {
     @SubscribeEvent
     public static void levelTick(TickEvent.PlayerTickEvent event){
         Level level = event.player.level();
-//        if(HavenUtil.isHaven() &&  level instanceof ServerLevel server){
-//            HavenUtil.setDayTime(server);
-//        }
-    }
-
-    @SubscribeEvent
-    public static void hurtEvent(LivingHurtEvent e){
-        LivingEntity targetEntity = e.getEntity();
-        Entity attack = e.getSource().getEntity();
-        if(targetEntity.getAttributes().hasAttribute(AttributesRegister.LoliDamageType.get()) && attack instanceof LivingEntity living){
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), living), (float) living.getAttribute(AttributesRegister.LoliDamageType.get()).getBaseValue());
+        if(HavenUtil.isHaven() &&  level instanceof ServerLevel server){
+            HavenUtil.setDayTime(server);
         }
     }
 }

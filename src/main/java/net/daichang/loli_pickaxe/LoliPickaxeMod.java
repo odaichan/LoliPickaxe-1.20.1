@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -82,10 +83,13 @@ public class LoliPickaxeMod {
         BlockPos pos = e.getPos();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
-            level.destroyBlock(pos, true, player);
+        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.forcedExcavation){
+            ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(level.getBlockState(pos).getBlock())));
+            level.addFreshEntity(item);
+            item.setPickUpDelay(0);
+            level.destroyBlock(pos, false, player);
 //            for (int itemCount = 1; itemCount <=64; itemCount++ ) {
-//                Block.dropResources(level.getBlockState(pos), level, BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()), null);
+//            Block.dropResources(level.getBlockState(pos), level, BlockPos.containing(pos.getX(), pos.getY(), pos.getZ()), null);
 //            }
             if (block instanceof LiquidBlock){
                 level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0);

@@ -1,7 +1,9 @@
 package net.daichang.loli_pickaxe.minecraft.player.client;
 
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
+import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.client.ClientRecipeBook;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -57,6 +59,15 @@ public class ClientLoliPlayer extends LocalPlayer {
             return false;
         }else {
             return super.hurt(p_108662_, p_108663_);
+        }
+    }
+
+    @Override
+    public double getBlockReach() {
+        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.breakRange){
+            return Config.breakBlockRange;
+        }else {
+            return super.getBlockReach();
         }
     }
 }

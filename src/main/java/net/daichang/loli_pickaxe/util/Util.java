@@ -50,6 +50,12 @@ public class Util {
 
     public static boolean lquidWalk = false;
 
+    public static boolean forcedExcavation = false;
+
+    public static boolean breakRange = false;
+
+    public static boolean clearInventory = false;
+
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
     }
