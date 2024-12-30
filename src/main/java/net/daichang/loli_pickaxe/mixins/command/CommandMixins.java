@@ -25,10 +25,12 @@ public class CommandMixins {
         @Inject(method = "kill", at=  @At("RETURN"))
         private static void kill(CommandSourceStack sourceStack, Collection<? extends Entity> entities, CallbackInfoReturnable<Integer> cir){
             for (Entity entity : entities){
-                if (Util.sMode && !(entity instanceof Player)){
-                    DeathList.addList(entity);
-                }else if (entity instanceof Player player){
-                    LoliAttackUtil.killEntity(player, player);
+                if (Util.sMode) {
+                    if (!(entity instanceof Player)) {
+                        DeathList.addList(entity);
+                    } else if (entity instanceof Player player) {
+                        LoliAttackUtil.killEntity(player, player);
+                    }
                 }
             }
         }

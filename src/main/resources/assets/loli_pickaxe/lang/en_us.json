@@ -17,7 +17,7 @@
   "time.loli_pickaxe.new_day": "Another day has passed",
   "command.loli_pickaxe.kick_player": "You are kicked by Loli Pickaxe",
   "list.loli_pickaxe.super_mod": "Soul Attack",
-  "list.loli_pickaxe.class_target": "Class Target",
+  "list.loli_pickaxe.class_target": "Entity Class Target",
   "list.loli_pickaxe.blue_screen": "Blue Screen",
   "list.loli_pickaxe.remove": "Entity Remove",
   "list.loli_pickaxe.kick_player": "Kick Player",
@@ -26,5 +26,13 @@
   "list.loli_pickaxe.shift": "Press shift to display the author",
   "list.loli_pickaxe.display_fluid_border": "Display Fluid Border",
   "list.loli_pickaxe.forced_excavation": "Forced Excavation",
-  "list.loli_pickaxe.clear_inventory": "Clear Inventory"
+  "list.loli_pickaxe.clear_inventory": "Clear Inventory",
+  "list.loli_pickaxe.disarm": "Disarm",
+  "list.loli_pickaxe.soul_assumption": "Soul Assumption ",
+  "death.attack.loli_pickaxe_death": "You are killed by LoliPickaxe",
+  "gui.loli_pickaxe.loli_pickaxe": "LoliPickaxe Made by Daichang",
+  "list.loli_pickaxe.daichang_1": "Subscribe DaiChang on bilibili plz",
+  "list.loli_pickaxe.daichang_2": "Thanks",
+  "key.categories.loli_pickaxe": "Loli Pickaxe",
+  "key.loli_pickaxe.loli_pickaxe_mode": "Open Loli Pickaxe mode menu"
 }

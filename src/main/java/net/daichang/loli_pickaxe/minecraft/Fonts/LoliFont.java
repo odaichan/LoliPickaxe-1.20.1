@@ -14,11 +14,9 @@ import org.jetbrains.annotations.NotNull;
 import org.joml.Matrix4f;
 
 import java.awt.*;
-import java.util.Random;
 import java.util.function.Function;
 
 public class LoliFont extends Font {
-    public static float tick = 0.0F;
     public LoliFont(Function<ResourceLocation, FontSet> p_243253_, boolean p_243245_) {
         super(p_243253_, p_243245_);
     }
@@ -39,15 +37,13 @@ public class LoliFont extends Font {
         });
         String text = ChatFormatting.stripFormatting(stringBuilder.toString());
         if (text != null) {
-            int textLength = text.length();
-            for (int index = 0; index < textLength; index++) {
+            float hueOffset = (float)Util.getMillis() / 800.0F;
+            for (int index = 0; index < text.length(); index++) {
                 String s = String.valueOf(text.charAt(index));
-                Random random1 = new Random();
-                float hue = (float) Util.getMillis() / 80L / 32.0F;
-                int color = Mth.hsvToRgb(hue, hue, 1.0F);
-                super.drawInBatch(s,x ,y, color, b1, matrix4f, multiBufferSource, mode, i, i1);
-                super.drawInBatch(s,x,y, color, b1, matrix4f, multiBufferSource, mode, i, i1);
-                x += this.width(s);
+                float hue = (hueOffset + index / text.length()) % 1.0F;
+                int c = rgb & 0xFF000000 | Mth.hsvToRgb(hue, 0.8F, 1.0F);
+                super.drawInBatch(s, x, y, c, b1, matrix4f, multiBufferSource, mode, i, i1);
+                x += width(s);
             }
         }
         return (int) x;

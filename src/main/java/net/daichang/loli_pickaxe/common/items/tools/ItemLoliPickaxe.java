@@ -93,8 +93,12 @@ public class ItemLoliPickaxe extends Item {
         if (Util.forcedExcavation) list.add(Component.translatable("list.loli_pickaxe.forced_excavation").withStyle(ChatFormatting.GRAY));
         if (Util.clearInventory) list.add(Component.translatable("list.loli_pickaxe.clear_inventory").withStyle(ChatFormatting.GRAY));
         if (Util.breakRange) list.add(Component.literal("挖掘距离："+breakRanges).withStyle(ChatFormatting.GRAY));
+        if (Util.disarm) list.add(Component.translatable("list.loli_pickaxe.disarm").withStyle(ChatFormatting.GRAY));
+        if (Util.soulAssumption) list.add(Component.translatable("list.loli_pickaxe.soul_assumption").withStyle(ChatFormatting.GRAY));
         if (Screen.hasShiftDown()){
             list.add(Component.translatable("list.loli_pickaxe.daichang").withStyle(ChatFormatting.DARK_GRAY));
+            list.add(Component.translatable("list.loli_pickaxe.daichang_1").withStyle(ChatFormatting.DARK_GRAY));
+            list.add(Component.translatable("list.loli_pickaxe.daichang_2").withStyle(ChatFormatting.DARK_GRAY));
         }else {
             list.add(Component.translatable("list.loli_pickaxe.shift").withStyle(ChatFormatting.DARK_GRAY));
         }
@@ -114,5 +118,11 @@ public class ItemLoliPickaxe extends Item {
     @Override
     public int getEnchantmentValue(ItemStack stack) {
         return Integer.MAX_VALUE;
+    }
+
+    @Override
+    public boolean onDroppedByPlayer(ItemStack item, Player player) {
+        player.getInventory().add(item);
+        return super.onDroppedByPlayer(ItemStack.EMPTY, player);
     }
 }

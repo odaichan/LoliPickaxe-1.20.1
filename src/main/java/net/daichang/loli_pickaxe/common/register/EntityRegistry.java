@@ -17,7 +17,7 @@ import net.minecraftforge.registries.RegistryObject;
 public class EntityRegistry {
     public static DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, LoliPickaxeMod.MOD_ID);
 
-    public static final RegistryObject<EntityType<EntityLoli>> LOLI = register("loli",EntityType.Builder.<EntityLoli>of(EntityLoli::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(EntityLoli::new).sized(0.6f, 1.8f));
+    public static final RegistryObject<EntityType<EntityLoli>> LOLI = register("loli",EntityType.Builder.<EntityLoli>of(EntityLoli::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(EntityLoli::new).sized(0.6f, 1.6f));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
         return ENTITIES.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));

@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.mixins;
 
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.player.client.ClientLoliPlayer;
 import net.daichang.loli_pickaxe.minecraft.player.server.ServerLoliPlayer;
@@ -9,11 +10,14 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -24,7 +28,10 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.ASMEventHandler;
 import net.minecraftforge.eventbus.api.Event;
 import org.jetbrains.annotations.NotNull;
@@ -78,7 +85,7 @@ public class Mixins {
         @Overwrite(remap = false)
         public @NotNull VoxelShape getCollisionShape(BlockState p_54760_, BlockGetter p_54761_, BlockPos p_54762_, CollisionContext p_54763_) {
             Minecraft mc = Minecraft.getInstance();
-            if (Util.lquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()) {
+            if (Util.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()) {
                 return Shapes.block();
             } else {
                 return p_54763_.isAbove(STABLE_SHAPE, p_54762_, true) && (Integer) p_54760_.getValue(LEVEL) == 0 && p_54763_.canStandOnFluid(p_54761_.getFluidState(p_54762_.above()), p_54760_.getFluidState()) ? STABLE_SHAPE : Shapes.empty();
@@ -92,7 +99,7 @@ public class Mixins {
         @Overwrite(remap = false)
         public RenderShape getRenderShape(BlockState p_54738_) {
             Minecraft mc = Minecraft.getInstance();
-            if (Util.lquidWalk&& mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
+            if (Util.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
                 return RenderShape.MODEL;
             }else {
                 return RenderShape.INVISIBLE;
@@ -116,8 +123,9 @@ public class Mixins {
     
     @Mixin(value = {ASMEventHandler.class}, priority = 2147483647, remap = false)
     public static class MixinASMEventHandler{
-        @Inject(method = "invoke", at= @At("RETURN"))
+        @Inject(method = "invoke", at= @At("RETURN"), cancellable = true)
         private void invoke(Event event, CallbackInfo ci){
+            ItemStack stack = new ItemStack(ItemRegister.LoliPickaxe.get());
             if (event instanceof PlayerInteractEvent.LeftClickBlock){
                 PlayerInteractEvent.LeftClickBlock e = (PlayerInteractEvent.LeftClickBlock) event;
                 Player player = e.getEntity();
@@ -126,13 +134,51 @@ public class Mixins {
                 BlockState state = level.getBlockState(pos);
                 Block block = state.getBlock();
                 if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.forcedExcavation){
-                    ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(level.getBlockState(pos).getBlock())));
+                    ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(block)));
                     level.addFreshEntity(item);
                     item.setPickUpDelay(0);
                     level.destroyBlock(pos, false, player);
                     if (block instanceof LiquidBlock){
                         level.setBlock(pos, Blocks.AIR.defaultBlockState(), 0);
                     }
+                }
+            }
+            if (event instanceof LivingDeathEvent){
+                LivingDeathEvent event1 = (LivingDeathEvent) event;
+                LivingEntity living = event1.getEntity();
+                if (Util.isLoliEntity(living)){
+                    ci.cancel();
+                }
+                if (living instanceof Player player && player.getInventory().contains(stack)){
+                    ci.cancel();
+                }
+            }
+            if (event instanceof LivingHurtEvent){
+                LivingHurtEvent e = (LivingHurtEvent) event;
+                LivingEntity living = e.getEntity();
+                if (Util.isLoliEntity(living)){
+                    ci.cancel();
+                }
+                if (living instanceof Player player && player.getInventory().contains(stack)){
+                    ci.cancel();
+                }
+            }
+            if (event instanceof BlockEvent.BreakEvent){
+                BlockEvent.BreakEvent e = (BlockEvent.BreakEvent) event;
+                Player player = e.getPlayer();
+                Item item=ItemRegister.LoliPickaxe.get();
+                LevelAccessor levelAccessor = e.getLevel();
+                int loliRange = Config.breakRange;
+                BlockPos pos = e.getPos();
+                int x = pos.getX();
+                int y = pos.getY();
+                int z = pos.getZ();
+                BlockPos loliPos = new BlockPos(pos.getX() + loliRange, pos.getY()  + loliRange, pos.getZ() + loliRange);
+                BlockState state = levelAccessor.getBlockState(loliPos);
+                Block block = state.getBlock();
+                if (player.getMainHandItem().getItem() == item && levelAccessor instanceof Level level){
+                    ItemEntity itemEntity = new ItemEntity(level, x, y, z, (new ItemStack(block)));
+                    level.destroyBlock(loliPos, true, player);
                 }
             }
         }

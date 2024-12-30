@@ -2,10 +2,7 @@ package net.daichang.loli_pickaxe.minecraft.Commands;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
-import net.daichang.loli_pickaxe.minecraft.Commands.Modes.BreakRange;
-import net.daichang.loli_pickaxe.minecraft.Commands.Modes.CanBlueScreen;
-import net.daichang.loli_pickaxe.minecraft.Commands.Modes.ClassTargetCommand;
-import net.daichang.loli_pickaxe.minecraft.Commands.Modes.KickPlayerCommands;
+import net.daichang.loli_pickaxe.minecraft.Commands.Modes.*;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
@@ -23,6 +20,8 @@ public class ModesCommand {
                 .then(ForcedExcavationCommand.register())
                 .then(BreakRangeCommand.register())
                 .then(ClearInventoryCommand.register())
+                .then(DisarmCommand.register())
+                .then(SoulAssumptionCommand.register())
                 ;
     }
 
@@ -68,6 +67,27 @@ public class ModesCommand {
                 clearInventory = !clearInventory;
                 return 0;
             });
+        }
+    }
+
+    static class DisarmCommand{
+        static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){
+            return Commands.literal("disarm").executes(cs -> {
+                disarm = !disarm;
+                return 0;
+            });
+        }
+    }
+
+    static class SoulAssumptionCommand{
+        static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){
+            return Commands.literal("soulAssumption")
+                    .then(SoulCommand.addList())
+                    .then(SoulCommand.removeOne())
+                    .then(SoulCommand.removeAll())
+                    .then(SoulCommand.openOrClose())
+                    .then(SoulCommand.getList())
+                    ;
         }
     }
 }

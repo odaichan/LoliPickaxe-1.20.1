@@ -2,6 +2,7 @@ package net.daichang.loli_pickaxe.minecraft.player.client;
 
 import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
+import net.daichang.loli_pickaxe.minecraft.SoulList;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.client.ClientRecipeBook;
@@ -10,7 +11,6 @@ import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.stats.StatsCounter;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.item.ItemStack;
 
 public class ClientLoliPlayer extends LocalPlayer {
@@ -20,9 +20,11 @@ public class ClientLoliPlayer extends LocalPlayer {
 
     @Override
     public float getHealth() {
-        if (this.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
+        if (this.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))) {
             return this.getMaxHealth();
-        }else {
+        }if (SoulList.isSoulList(this)){
+            return 0.0F;
+        } else {
             return super.getHealth();
         }
     }
@@ -50,15 +52,6 @@ public class ClientLoliPlayer extends LocalPlayer {
             return false;
         }else {
             return super.isDeadOrDying();
-        }
-    }
-
-    @Override
-    public boolean hurt(DamageSource p_108662_, float p_108663_) {
-        if (this.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
-            return false;
-        }else {
-            return super.hurt(p_108662_, p_108663_);
         }
     }
 

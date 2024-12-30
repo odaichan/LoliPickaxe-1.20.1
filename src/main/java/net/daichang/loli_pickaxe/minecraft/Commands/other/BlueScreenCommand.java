@@ -1,4 +1,4 @@
-package net.daichang.loli_pickaxe.minecraft.Commands;
+package net.daichang.loli_pickaxe.minecraft.Commands.other;
 
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;

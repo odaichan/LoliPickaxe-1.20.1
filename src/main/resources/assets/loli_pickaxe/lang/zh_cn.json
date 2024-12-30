@@ -17,7 +17,7 @@
   "time.loli_pickaxe.new_day": "Another day has passed",
   "command.loli_pickaxe.kick_player": "你被氪金萝莉踢出了服务器",
   "list.loli_pickaxe.super_mod": "强制击杀",
-  "list.loli_pickaxe.class_target": "灵魂打击",
+  "list.loli_pickaxe.class_target": "实体监测",
   "list.loli_pickaxe.blue_screen": "蓝屏打击",
   "list.loli_pickaxe.remove": "实体删除",
   "list.loli_pickaxe.kick_player": "踢出玩家",
@@ -26,5 +26,13 @@
   "list.loli_pickaxe.shift": "按下 Shift 键以显示作者",
   "list.loli_pickaxe.display_fluid_border": "显示流体边框",
   "list.loli_pickaxe.forced_excavation": "强制挖掘",
-  "list.loli_pickaxe.clear_inventory": "清空玩家背包"
+  "list.loli_pickaxe.clear_inventory": "清空玩家背包",
+  "list.loli_pickaxe.disarm": "缴械",
+  "list.loli_pickaxe.soul_assumption": "灵魂超度",
+  "death.attack.loli_pickaxe_death": "你被氪金萝莉抹杀了",
+  "gui.loli_pickaxe.loli_pickaxe": "LoliPickaxe Mod Made by 带长酱~",
+  "list.loli_pickaxe.daichang_1": "请在Bilibili订阅带长",
+  "list.loli_pickaxe.daichang_2": "万分感谢",
+  "key.categories.loli_pickaxe": "氪金萝莉",
+  "key.loli_pickaxe.loli_pickaxe_mode": "打开氪金萝莉功能菜单"
 }

@@ -1,7 +1,9 @@
 package net.daichang.loli_pickaxe.minecraft.event;
 
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
-import net.daichang.loli_pickaxe.minecraft.Commands.*;
+import net.daichang.loli_pickaxe.minecraft.Commands.LoliEntityCommand;
+import net.daichang.loli_pickaxe.minecraft.Commands.ModesCommand;
+import net.daichang.loli_pickaxe.minecraft.Commands.OtherCommand;
 import net.daichang.loli_pickaxe.util.HavenUtil.HavenUtil;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
@@ -31,14 +33,11 @@ import java.util.List;
 
 @Mod.EventBusSubscriber
 public class LoliPickaxeEvent {
-    private static int countTick = 0;
 
     @SubscribeEvent
     public static void CommandRegister(RegisterCommandsEvent event){
         event.getDispatcher().register(Commands.literal("loliPickaxe")
                 .requires(s -> s.hasPermission(4))
-                .then(BlueScreenCommand.register())
-                .then(KilledPlayerCommand.register())
                 .then(ModesCommand.register())
                 .then(LoliEntityCommand.register())
                 .then(OtherCommand.register())

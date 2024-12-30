@@ -4,11 +4,13 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.state.BlockState;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
@@ -27,13 +29,15 @@ public abstract class MixinLivingEntity {
 
     @Shadow public abstract void remove(Entity.RemovalReason p_276115_);
 
+    @Shadow protected abstract boolean trapdoorUsableAsLadder(BlockPos p_21177_, BlockState p_21178_);
+
     @Unique
     private final LivingEntity loli_pickaxe$living = (LivingEntity) (Object) this;
 
     @Inject(method = "getHealth", at = @At("RETURN"), cancellable = true)
     private void getHealth(CallbackInfoReturnable<Float> cir){
         if(DeathList.isList(loli_pickaxe$living) && sMode){
-            cir.setReturnValue(Float.NEGATIVE_INFINITY);
+            cir.setReturnValue(0.0F);
         }
         if (loli_pickaxe$living instanceof Player && ((Player) loli_pickaxe$living).getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
             cir.setReturnValue(loli_pickaxe$living.getMaxHealth());
@@ -64,6 +68,19 @@ public abstract class MixinLivingEntity {
     private void hurt(DamageSource source, float p_21017_, CallbackInfoReturnable<Boolean> cir) {
         if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
             cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "isAlive", at = @At("HEAD"), cancellable = true)
+    private void isAlive(CallbackInfoReturnable<Boolean> cir) {
+        if(loli_pickaxe$living.getHealth()>0){
+            cir.setReturnValue(true);
+        }
+        if (loli_pickaxe$living.getHealth()<=0){
+            cir.setReturnValue(false);
+        }
+        if (Util.isLoliEntity(loli_pickaxe$living)){
+            cir.setReturnValue(true);
         }
     }
 }
