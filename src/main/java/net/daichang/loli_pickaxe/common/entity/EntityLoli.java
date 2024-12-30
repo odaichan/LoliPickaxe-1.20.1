@@ -35,25 +35,24 @@ import java.util.Random;
 
 public class EntityLoli extends Monster{
     private static final float loliHealth = 20.0F;
+
     private static int loliDeathTime = -2;
+
     private static final String DEATH_TIME_HANDLER = "LoliDeathTime''";
+
     private static final RemovalReason reason = RemovalReason.KILLED;
+
     public EntityLoli(PlayMessages.SpawnEntity packet, Level world) {
         this(EntityRegistry.LOLI.get(), world);
-        this.aiStep();
         this.registerGoals();
         this.hurtMarked = true;
         this.hurtTime = -2;
         this.xpReward = Integer.MAX_VALUE;
-        this.isBaby();
         this.invulnerableTime = -2;
-        this.heal(loliHealth);
-        this.deathTime = loliDeathTime;
     }
     public EntityLoli(EntityType<? extends Monster> loli, Level world) {
         super(loli, world);
     }
-
 
     @Override
     public @NotNull Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -77,21 +76,19 @@ public class EntityLoli extends Monster{
         double a = new Random().nextDouble(0.1, 0.5);
         final Vec3 _center = new Vec3(this.getX(), this.getY(), this.getZ());
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
-            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player) && livingEntity.isAlive()) {
+            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player) && livingEntity.getHealth()>0) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
                 DeathList.addList(livingEntity);
                 if (livingEntity.getHealth() == 0){
                     livingEntity.isDeadOrDying();
                     livingEntity.heal(-100.0F);
                 }
-                this.setPos(livingEntity.getX() + a, livingEntity.getY() + a, livingEntity.getZ() + a);
-            }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
+            }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.getHealth()>0) {
                 LoliAttackUtil.killEntity(this, player);
-                this.setPos(player.getX() + a, player.getY() + a, player.getZ() + a);
             }
+            this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
         }
         this.deathTime = -2;
-        this.fallDistance = 0;
         Util.Override_DATA_HEALTH_ID(this, loliHealth);
         this.setHealth(loliHealth);
         this.canUpdate(true);

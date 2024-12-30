@@ -7,6 +7,8 @@ public class Config {
 
     public static double breakBlockRange = 10;
 
+    public static double entityAttackRange = 10;
+
     public static int breakCount = 1;
 
     public static int attackRange = 100;

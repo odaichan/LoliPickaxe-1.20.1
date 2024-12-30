@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.minecraft.event;
 
+import net.daichang.loli_pickaxe.common.client.entityRender.LoliGodRender;
 import net.daichang.loli_pickaxe.common.client.entityRender.LoliRender;
 import net.daichang.loli_pickaxe.common.register.EntityRegistry;
 import net.minecraftforge.api.distmarker.Dist;
@@ -12,5 +13,6 @@ public class ClientEvent {
     @SubscribeEvent
     public static void onClientSetup(EntityRenderersEvent.RegisterRenderers event) {
         event.registerEntityRenderer(EntityRegistry.LOLI.get(), LoliRender::new);
+        event.registerEntityRenderer(EntityRegistry.LOLI_God.get(), LoliGodRender::new);
     }
 }

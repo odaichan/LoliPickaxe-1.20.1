@@ -61,4 +61,13 @@ public class ServerLoliPlayer extends ServerPlayer {
             return super.getBlockReach();
         }
     }
+
+    @Override
+    public double getEntityReach() {
+        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.entityReachQ){
+            return Config.entityAttackRange;
+        }else {
+            return super.getEntityReach();
+        }
+    }
 }

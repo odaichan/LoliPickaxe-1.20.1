@@ -1,6 +1,7 @@
 package net.daichang.loli_pickaxe.common.register;
 
 import net.daichang.loli_pickaxe.LoliPickaxeMod;
+import net.daichang.loli_pickaxe.common.entity.Boss.EntityLoliGod;
 import net.daichang.loli_pickaxe.common.entity.EntityLoli;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +19,7 @@ public class EntityRegistry {
     public static DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, LoliPickaxeMod.MOD_ID);
 
     public static final RegistryObject<EntityType<EntityLoli>> LOLI = register("loli",EntityType.Builder.<EntityLoli>of(EntityLoli::new, MobCategory.MONSTER).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(EntityLoli::new).sized(0.6f, 1.6f));
+    public static final RegistryObject<EntityType<EntityLoliGod>> LOLI_God = register("loli_god",EntityType.Builder.<EntityLoliGod>of(EntityLoliGod::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(3).setCustomClientFactory(EntityLoliGod::new).sized(0.6f, 1.6f));
 
     private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
         return ENTITIES.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
@@ -33,5 +35,6 @@ public class EntityRegistry {
     @SubscribeEvent
     public static void registerAttributes(EntityAttributeCreationEvent event) {
         event.put(LOLI.get(), EntityLoli.createAttributes().build());
+        event.put(LOLI_God.get(), EntityLoliGod.createAttributes().build());
     }
 }

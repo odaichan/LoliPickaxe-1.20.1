@@ -5,11 +5,16 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.player.client.ClientLoliPlayer;
 import net.daichang.loli_pickaxe.minecraft.player.server.ServerLoliPlayer;
 import net.daichang.loli_pickaxe.util.HelperLib;
+import net.daichang.loli_pickaxe.util.TextUtil;
 import net.daichang.loli_pickaxe.util.Util;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -30,6 +35,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.ASMEventHandler;
@@ -152,6 +158,9 @@ public class Mixins {
                 if (living instanceof Player player && player.getInventory().contains(stack)){
                     ci.cancel();
                 }
+                if (living.getRemovalReason() ==null){
+                    living.removalReason = Entity.RemovalReason.KILLED;
+                }
             }
             if (event instanceof LivingHurtEvent){
                 LivingHurtEvent e = (LivingHurtEvent) event;
@@ -179,6 +188,25 @@ public class Mixins {
                 if (player.getMainHandItem().getItem() == item && levelAccessor instanceof Level level){
                     ItemEntity itemEntity = new ItemEntity(level, x, y, z, (new ItemStack(block)));
                     level.destroyBlock(loliPos, true, player);
+                }
+            }
+            if (event instanceof ItemTooltipEvent){
+                ItemTooltipEvent tooltipEvent = (ItemTooltipEvent) event;
+                if (tooltipEvent.getItemStack().getItem() == ItemRegister.LoliPickaxe.get()) {
+                    List<Component> tooltip = tooltipEvent.getToolTip();
+                    int size = tooltip.size();
+                    MutableComponent mutableComponent1 = Component.translatable("attribute.name.generic.attack_damage");
+                    MutableComponent mutableComponent2 = Component.translatable("attribute.name.generic.attack_speed");
+                    String var10000 = TextUtil.GetColor("TREE(3) ");
+                    MutableComponent mutableComponent3 = Component.literal(" " + var10000 + ChatFormatting.DARK_GREEN + " 攻击伤害");
+                    MutableComponent mutableComponent4 = Component.literal(" " + var10000 + ChatFormatting.DARK_GREEN + " 攻击速度");
+                    for (int i = 0; i < size; i++) {
+                        Component line = tooltip.get(i);
+                        if (line.contains(mutableComponent1))
+                            tooltip.set(i, mutableComponent3);
+                        if (line.contains(mutableComponent2))
+                            tooltip.set(i, mutableComponent4);
+                    }
                 }
             }
         }

@@ -59,6 +59,9 @@ public class Util {
     public static boolean disarm = false;
 
     public static boolean soulAssumption = false;
+    public static boolean autoAttack = false;
+
+    public static boolean entityReachQ = false;
 
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
@@ -146,12 +149,12 @@ public class Util {
     }
 
     public static void loliPickaxeKickPlayer(ServerPlayer serverPlayer, Component component){
-        serverPlayer.connection.connection.send(new ClientboundDisconnectPacket(component), PacketSendListener.thenRun(() -> serverPlayer.connection.connection.disconnect(component)));
-        serverPlayer.connection.connection.setReadOnly();
+        Connection connection = serverPlayer.connection.connection;
+        connection.send(new ClientboundDisconnectPacket(component), PacketSendListener.thenRun(() -> connection.disconnect(component)));
+        connection.setReadOnly();
         MinecraftServer var10000 = serverPlayer.server;
-        Connection var10001 = serverPlayer.connection.connection;
-        Objects.requireNonNull(var10001);
-        var10000.executeBlocking(var10001::handleDisconnection);
+        Objects.requireNonNull(connection);
+        var10000.executeBlocking(connection::handleDisconnection);
     }
 
     public static EntityCategory getCategory(Entity entity){

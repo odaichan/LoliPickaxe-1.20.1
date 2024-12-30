@@ -4,6 +4,7 @@ import net.daichang.loli_pickaxe.api.BlueScreenAPI;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.ClassTargetList;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
+import net.daichang.loli_pickaxe.minecraft.SoulList;
 import net.daichang.loli_pickaxe.util.core.enums.EntityDeleteReasonManager;
 import net.daichang.loli_pickaxe.util.core.enums.IRemove;
 import net.minecraft.client.Minecraft;
@@ -32,7 +33,6 @@ import java.util.List;
 import static net.daichang.loli_pickaxe.util.Util.*;
 
 public class LoliAttackUtil {
-
     public static void killEntity(LivingEntity isLoli, Entity targetEntity){
         if (!(targetEntity instanceof Player player)) {
             targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli)));
@@ -114,6 +114,9 @@ public class LoliAttackUtil {
                 player.inventory = new Inventory(player);
             }
         }
+        if (soulAssumption){
+            SoulList.addTarget(player);
+        }
     }
 
     public static void removeEntity(Entity entity){
@@ -123,7 +126,9 @@ public class LoliAttackUtil {
         entity.remove(removalReason);
         entity.onClientRemoval();
         entity.onRemovedFromWorld();
-        entity.isRemoved();
+        entity.setPos(Double.NaN, Double.NaN, Double.NaN);
+        entity.discard();
+        entity.setInvisible(true);
         EntityDeleteReasonManager.setDeleteReason(entity, deleteReasonManager);
     }
 }

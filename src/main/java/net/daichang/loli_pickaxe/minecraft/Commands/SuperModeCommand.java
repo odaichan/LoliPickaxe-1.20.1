@@ -22,7 +22,6 @@ public class SuperModeCommand {
                         player.displayClientMessage(Component.literal("灵魂打击：" + sMode), false);
                     }else {
                         System.out.println("EEEOR: You don't have LoliPickaxe, can't use this command");
-                        System.out.println("错误：你没有氪金萝莉，无法使用此命令");
                     }
                     return 0;
                 });

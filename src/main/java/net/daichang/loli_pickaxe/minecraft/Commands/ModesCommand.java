@@ -22,6 +22,8 @@ public class ModesCommand {
                 .then(ClearInventoryCommand.register())
                 .then(DisarmCommand.register())
                 .then(SoulAssumptionCommand.register())
+                .then(ReverseInjuryCommand.register())
+                .then(EntityRangeCommand.register())
                 ;
     }
 
@@ -87,6 +89,24 @@ public class ModesCommand {
                     .then(SoulCommand.removeAll())
                     .then(SoulCommand.openOrClose())
                     .then(SoulCommand.getList())
+                    ;
+        }
+    }
+
+    static class ReverseInjuryCommand{
+        static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){
+            return Commands.literal("reverseInjury").executes(cs -> {
+                reverseInjury = !reverseInjury;
+                return 0;
+            });
+        }
+    }
+
+    static class EntityRangeCommand{
+        static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){
+            return Commands.literal("entityRange")
+                    .then(AttackRange.breakRangeregister())
+                    .then(AttackRange.isTrueOrFalseregister())
                     ;
         }
     }

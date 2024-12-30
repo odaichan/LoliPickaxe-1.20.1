@@ -37,7 +37,6 @@ public class LoliPickaxeEvent {
     @SubscribeEvent
     public static void CommandRegister(RegisterCommandsEvent event){
         event.getDispatcher().register(Commands.literal("loliPickaxe")
-                .requires(s -> s.hasPermission(4))
                 .then(ModesCommand.register())
                 .then(LoliEntityCommand.register())
                 .then(OtherCommand.register())

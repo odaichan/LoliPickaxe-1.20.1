@@ -12,6 +12,6 @@ public class EnchantmentRegistry {
     public static final RegistryObject<Enchantment> SunFix ;
 
     static {
-        SunFix =  ench.register("sun_fix", () -> new TheSunFixEnchantment());
+        SunFix =  ench.register("sun_fix", TheSunFixEnchantment::new);
     }
 }

@@ -7,7 +7,6 @@
   "mods.loli_pickaxe,tab" : "Some Tools",
   "item.loli_pickaxe.loli_spawn_egg": "Loli Spawn Egg",
   "item.loli_pickaxe.test": "Sword",
-  "list.loli_pickaxe.add": "Left click entity to added Loli Pickaxe on it hand",
   "list.loli_pickaxe.removeLoli": "Light lick Loli Entity to remove it",
   "chat.loli_pickaxe.chat_1": "LoliPickaxe mod by Daichang",
   "chat.loli_pickaxe.chat_2": "GithubUrl: https://github.com/odaichan/LoliPickaxe-1.20.1/tree/master",
@@ -34,5 +33,6 @@
   "list.loli_pickaxe.daichang_1": "Subscribe DaiChang on bilibili plz",
   "list.loli_pickaxe.daichang_2": "Thanks",
   "key.categories.loli_pickaxe": "Loli Pickaxe",
-  "key.loli_pickaxe.loli_pickaxe_mode": "Open Loli Pickaxe mode menu"
+  "key.loli_pickaxe.loli_pickaxe_mode": "Open Loli Pickaxe mode menu",
+  "entity.loli_pickaxe.loli_god": "Loli God"
 }

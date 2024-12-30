@@ -1,7 +1,9 @@
 package net.daichang.loli_pickaxe.mixins;
 
+import net.daichang.loli_pickaxe.common.entity.Boss.EntityLoliGod;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
+import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.core.BlockPos;
@@ -62,6 +64,9 @@ public abstract class MixinLivingEntity {
          if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
              LoliDefenseUtil.safeEntity(loli_pickaxe$living);
          }
+         if (sMode && loli_pickaxe$living.deathTime >= 20){
+             LoliAttackUtil.removeEntity(loli_pickaxe$living);
+         }
     }
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
@@ -81,6 +86,13 @@ public abstract class MixinLivingEntity {
         }
         if (Util.isLoliEntity(loli_pickaxe$living)){
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "remove", at= @At("HEAD"), cancellable = true)
+    private void remove(Entity.RemovalReason p_276115_, CallbackInfo ci){
+        if(loli_pickaxe$living instanceof EntityLoliGod){
+            ci.cancel();
         }
     }
 }

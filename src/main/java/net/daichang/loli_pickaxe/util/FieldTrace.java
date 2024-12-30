@@ -9,7 +9,7 @@ import java.util.List;
 
 public class FieldTrace {
 
-    public static List<String> traceAllFields(Object object) {
+    public static void traceAllFields(Object object) {
         List<String> accessLog = new ArrayList<>();
         try {
             Class<?> clazz = object.getClass();
@@ -47,6 +47,5 @@ public class FieldTrace {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return accessLog;
     }
 }
