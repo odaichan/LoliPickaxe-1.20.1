@@ -9,7 +9,11 @@ import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
@@ -35,11 +39,9 @@ import java.util.Random;
 
 public class EntityLoli extends Monster{
     private static final float loliHealth = 20.0F;
-
     private static int loliDeathTime = -2;
-
     private static final String DEATH_TIME_HANDLER = "LoliDeathTime''";
-
+    public static final EntityDataAccessor<Boolean> LOLI_REMOVE = SynchedEntityData.defineId(EntityLoli.class, EntityDataSerializers.BOOLEAN);
     private static final RemovalReason reason = RemovalReason.KILLED;
 
     public EntityLoli(PlayMessages.SpawnEntity packet, Level world) {
@@ -76,17 +78,18 @@ public class EntityLoli extends Monster{
         double a = new Random().nextDouble(0.1, 0.5);
         final Vec3 _center = new Vec3(this.getX(), this.getY(), this.getZ());
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
-            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player) && livingEntity.getHealth()>0) {
+            if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player) && livingEntity.isAlive()) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
                 DeathList.addList(livingEntity);
                 if (livingEntity.getHealth() == 0){
                     livingEntity.isDeadOrDying();
                     livingEntity.heal(-100.0F);
                 }
-            }else if(entity instanceof ServerPlayer player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.getHealth()>0) {
+                this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
+            }else if(entity instanceof Player player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);
+                this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
             }
-            this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
         }
         this.deathTime = -2;
         Util.Override_DATA_HEALTH_ID(this, loliHealth);
@@ -120,11 +123,6 @@ public class EntityLoli extends Monster{
 
     public static void init() {
 
-    }
-
-    @Override
-    public boolean isBaby() {
-        return true;
     }
 
     @Override
@@ -219,5 +217,30 @@ public class EntityLoli extends Monster{
         for (Entity entity : level.getEntitiesOfClass(Entity.class, new AABB(vec3, vec3))){
             LoliAttackUtil.killEntity(this, entity);
         }
+    }
+
+    @Override
+    protected @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+        if (player.getMainHandItem().getItem() == ItemRegister.Test.get()){
+            this.entityData.set(LOLI_REMOVE, Boolean.valueOf(true));
+            this.remove(reason);
+            this.setRemoved(reason);
+            player.swing(InteractionHand.MAIN_HAND, true);
+            player.swingingArm = InteractionHand.MAIN_HAND;
+        }
+        return super.mobInteract(player, hand);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(LOLI_REMOVE, Boolean.valueOf(false));
+    }
+
+    @Override
+    public @Nullable RemovalReason getRemovalReason() {
+        if (this.entityData.get(LOLI_REMOVE))
+            return reason;
+        return null;
     }
 }

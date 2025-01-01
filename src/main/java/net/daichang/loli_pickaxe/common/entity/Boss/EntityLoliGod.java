@@ -14,6 +14,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.network.PlayMessages;
 import org.jetbrains.annotations.NotNull;
@@ -67,6 +68,7 @@ public class EntityLoliGod extends Monster {
             Iterables.unmodifiableIterable(serverLevel.getAllEntities()).forEach(target -> {
                 if (!(target instanceof Player) && !(target instanceof EntityLoliGod)){
                     LoliAttackUtil.removeEntity(target);
+                    target.gameEvent(GameEvent.ENTITY_DIE);
                 }else {
                     serverLevel.getServer().getPlayerList().broadcastSystemMessage(Component.literal("世界迎来了终点..."), false);
                 }

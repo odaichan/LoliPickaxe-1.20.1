@@ -59,6 +59,7 @@ public class Util {
     public static boolean disarm = false;
 
     public static boolean soulAssumption = false;
+
     public static boolean autoAttack = false;
 
     public static boolean entityReachQ = false;

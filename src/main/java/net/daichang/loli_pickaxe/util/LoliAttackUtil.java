@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageTypes;
 import net.minecraft.world.entity.Entity;
@@ -35,33 +36,41 @@ import static net.daichang.loli_pickaxe.util.Util.*;
 public class LoliAttackUtil {
     public static void killEntity(LivingEntity isLoli, Entity targetEntity){
         if (!(targetEntity instanceof Player player)) {
-            targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli)));
             if (sMode) {
                 DeathList.addList(targetEntity);
-            }
-            if (classTarget) {
-                ClassTargetList.addTarget(targetEntity);
-            }
-            if (remove) {
-                removeEntity(targetEntity);
-            }
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
-            targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
-            if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
-                targetLiving.setHealth(0.0F);
-                targetLiving.isDeadOrDying();
-                targetLiving.hurtTime = 0;
-                targetLiving.hurtDuration = 0;
-                targetLiving.invulnerableTime = 0;
-                targetLiving.invulnerableDuration = 0;
-                targetLiving.heal(Float.NEGATIVE_INFINITY);
-                Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
-                if (targetLiving instanceof EnderDragon dragon) {
-                    dragon.dragonDeathTime = 190;
-                    dragon.ambientSoundTime = -2;
-                    dragon.flapTime = -2;
+                Util.Override_DATA_HEALTH_ID(targetEntity, 0.0F);
+                if (targetEntity instanceof LivingEntity living){
+                    living.setHealth(0.0F);
+                    living.getBrain().clearMemories();
                 }
+            }else {
+                targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli)));
+                if (classTarget) {
+                    ClassTargetList.addTarget(targetEntity);
+                }
+                if (remove) {
+                    removeEntity(targetEntity);
+                }
+                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
+                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
+                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
+                if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
+                    targetLiving.setHealth(0.0F);
+                    targetLiving.isDeadOrDying();
+                    Util.Override_DATA_HEALTH_ID(targetLiving, 0.0F);
+                    if (targetLiving instanceof EnderDragon dragon) {
+                        dragon.dragonDeathTime = 190;
+                        dragon.ambientSoundTime = -2;
+                        dragon.flapTime = -2;
+                    }
+                }
+            }
+            if (disarm && targetEntity instanceof LivingEntity living){
+                Level level = living.level();
+                ItemStack  rightHandStack = living.getMainHandItem();
+                ItemEntity entity = new ItemEntity(level, living.getX(), living.getY(), living.getZ(), rightHandStack);
+                level.addFreshEntity(entity);
+                living.setItemInHand(InteractionHand.MAIN_HAND, ItemStack.EMPTY);
             }
         }else {
             Level level = player.level();

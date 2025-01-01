@@ -33,6 +33,13 @@ public class MixinPlayer {
         }
     }
 
+    @Inject(method = "isHurt", at = @At("RETURN"), cancellable = true)
+    private void isHurt(CallbackInfoReturnable<Boolean> cir){
+        if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe)  && Util.reverseInjury){
+            cir.setReturnValue(false);
+        }
+    }
+
     @Inject(method = "tick", at= @At("HEAD"))
     private void tick(CallbackInfo ci){
         if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe)){

@@ -38,7 +38,7 @@ public abstract class MixinLivingEntity {
 
     @Inject(method = "getHealth", at = @At("RETURN"), cancellable = true)
     private void getHealth(CallbackInfoReturnable<Float> cir){
-        if(DeathList.isList(loli_pickaxe$living) && sMode){
+        if(DeathList.isList(loli_pickaxe$living)){
             cir.setReturnValue(0.0F);
         }
         if (loli_pickaxe$living instanceof Player && ((Player) loli_pickaxe$living).getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
@@ -64,8 +64,12 @@ public abstract class MixinLivingEntity {
          if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
              LoliDefenseUtil.safeEntity(loli_pickaxe$living);
          }
-         if (sMode && loli_pickaxe$living.deathTime >= 20){
-             LoliAttackUtil.removeEntity(loli_pickaxe$living);
+         if (sMode && DeathList.isList(loli_pickaxe$living)){
+             int loliDeath = 0;
+             loliDeath++;
+             if (loliDeath >= 20) {
+                 LoliAttackUtil.removeEntity(loli_pickaxe$living);
+             }
          }
     }
 
