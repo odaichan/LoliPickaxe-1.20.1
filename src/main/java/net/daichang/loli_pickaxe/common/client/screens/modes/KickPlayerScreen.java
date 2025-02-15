@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-import static net.daichang.loli_pickaxe.util.Util.kickPlayer;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class KickPlayerScreen extends LoliModeScreen {
     private int leftPos;

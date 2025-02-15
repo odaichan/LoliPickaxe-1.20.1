@@ -10,7 +10,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-import static net.daichang.loli_pickaxe.util.Util.sMode;
+import static net.daichang.loli_pickaxe.Config.Config.sMode;
 
 public class SuperModeCommand {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){

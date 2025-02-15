@@ -5,7 +5,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
 
-import static net.daichang.loli_pickaxe.util.Util.blueScreen;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 
 public class SuperModeScreen extends LoliModeScreen {

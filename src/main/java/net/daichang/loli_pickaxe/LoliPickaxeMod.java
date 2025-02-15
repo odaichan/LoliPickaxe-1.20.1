@@ -39,6 +39,7 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+import static net.daichang.loli_pickaxe.Config.Config.*;
 import static net.daichang.loli_pickaxe.LoliPickaxeMod.MOD_ID;
 
 // The value here should match an entry in the META-INF/mods.toml file
@@ -101,7 +102,7 @@ public class LoliPickaxeMod {
         BlockPos pos = e.getPos();
         BlockState state = level.getBlockState(pos);
         Block block = state.getBlock();
-        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.forcedExcavation){
+        if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && forcedExcavation){
             ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(level.getBlockState(pos).getBlock())));
             level.addFreshEntity(item);
             item.setPickUpDelay(0);

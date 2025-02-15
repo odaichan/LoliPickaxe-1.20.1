@@ -15,12 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-public class SnowSwordTransformationService implements ITransformationService {
+public class LoliTransformationService implements ITransformationService {
     static {
         LaunchPluginHandler handler = HelperLib.getFieldValue(Launcher.INSTANCE, "launchPlugins", LaunchPluginHandler.class);
         Map<String, ILaunchPluginService> plugins = (Map<String, ILaunchPluginService>) HelperLib.getFieldValue(handler, "plugins", Map.class);
         Map<String, ILaunchPluginService> newMap = new HashMap<>();
-        newMap.put("!Snow", new SnowSwordLaunchPluginService());
+        newMap.put("!Snow", new LoliLaunchPluginService());
         if (plugins != null) for (String name : plugins.keySet())
             newMap.put(name, plugins.get(name));
         HelperLib.setFieldValue(handler, "plugins", newMap);

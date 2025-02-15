@@ -91,7 +91,7 @@ public class Mixins {
         @Overwrite(remap = false)
         public @NotNull VoxelShape getCollisionShape(BlockState p_54760_, BlockGetter p_54761_, BlockPos p_54762_, CollisionContext p_54763_) {
             Minecraft mc = Minecraft.getInstance();
-            if (Util.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()) {
+            if (Config.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()) {
                 return Shapes.block();
             } else {
                 return p_54763_.isAbove(STABLE_SHAPE, p_54762_, true) && (Integer) p_54760_.getValue(LEVEL) == 0 && p_54763_.canStandOnFluid(p_54761_.getFluidState(p_54762_.above()), p_54760_.getFluidState()) ? STABLE_SHAPE : Shapes.empty();
@@ -105,7 +105,7 @@ public class Mixins {
         @Overwrite(remap = false)
         public RenderShape getRenderShape(BlockState p_54738_) {
             Minecraft mc = Minecraft.getInstance();
-            if (Util.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
+            if (Config.liquidWalk && mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
                 return RenderShape.MODEL;
             }else {
                 return RenderShape.INVISIBLE;
@@ -119,7 +119,7 @@ public class Mixins {
         @Overwrite(remap = false)
         public VoxelShape getShape(BlockState p_54749_, BlockGetter p_54750_, BlockPos p_54751_, CollisionContext p_54752_) {
             Minecraft mc = Minecraft.getInstance();
-            if (Util.displayFluidBorder&& mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
+            if (Config.displayFluidBorder&& mc.player != null && mc.player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get()){
                 return Shapes.block();
             }else {
                 return Shapes.empty();
@@ -139,7 +139,7 @@ public class Mixins {
                 BlockPos pos = e.getPos();
                 BlockState state = level.getBlockState(pos);
                 Block block = state.getBlock();
-                if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.forcedExcavation){
+                if (player.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Config.forcedExcavation){
                     ItemEntity item = new ItemEntity(level, pos.getX(), pos.getY(), pos.getZ(), (new ItemStack(block)));
                     level.addFreshEntity(item);
                     item.setPickUpDelay(0);
@@ -177,7 +177,7 @@ public class Mixins {
                 Player player = e.getPlayer();
                 Item item=ItemRegister.LoliPickaxe.get();
                 LevelAccessor levelAccessor = e.getLevel();
-                int loliRange = Config.breakRange;
+                int loliRange = Config.breakrange;
                 BlockPos pos = e.getPos();
                 int x = pos.getX();
                 int y = pos.getY();

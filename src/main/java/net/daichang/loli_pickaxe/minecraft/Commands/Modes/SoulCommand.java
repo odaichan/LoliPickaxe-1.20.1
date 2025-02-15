@@ -3,8 +3,8 @@ package net.daichang.loli_pickaxe.minecraft.Commands.Modes;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.builder.ArgumentBuilder;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.minecraft.SoulList;
-import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -40,7 +40,7 @@ public class SoulCommand {
 
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> openOrClose(){
         return Commands.literal("set").then(Commands.argument("boolean", BoolArgumentType.bool()).executes(cs-> {
-            Util.soulAssumption = BoolArgumentType.getBool(cs, "boolean");
+            Config.soulAssumption = BoolArgumentType.getBool(cs, "boolean");
             return 0;
         }));
     }

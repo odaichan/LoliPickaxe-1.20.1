@@ -1,5 +1,6 @@
 package net.daichang.loli_pickaxe.util;
 
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.api.BlueScreenAPI;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.ClassTargetList;
@@ -10,8 +11,6 @@ import net.daichang.loli_pickaxe.util.core.enums.IRemove;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
@@ -25,23 +24,43 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.Comparator;
 import java.util.List;
 
-import static net.daichang.loli_pickaxe.util.Util.*;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class LoliAttackUtil {
     public static void killEntity(LivingEntity isLoli, Entity targetEntity){
+        DamageSource damageSource = new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli);
         if (!(targetEntity instanceof Player player)) {
+            targetEntity.gameEvent(GameEvent.ENTITY_DIE);
             if (sMode) {
                 DeathList.addList(targetEntity);
+                targetEntity.kill();
                 Util.Override_DATA_HEALTH_ID(targetEntity, 0.0F);
-                if (targetEntity instanceof LivingEntity living){
+                if (targetEntity instanceof LivingEntity living && living.level() instanceof ServerLevel serverLevel && living.isAlive()){
                     living.setHealth(0.0F);
+                    living.dropAllDeathLoot(damageSource);
+                    serverLevel.broadcastEntityEvent(living, (byte) 3);
+                    isLoli.killedEntity(serverLevel, living);
                     living.getBrain().clearMemories();
+                    for (int loli = 0; loli < 20; loli ++){
+                        living.deathTime = loli;
+                        int finalLoli = loli;
+                        new Thread(() -> {
+                            try {
+                                if (finalLoli == 19){
+                                    living.remove(Entity.RemovalReason.KILLED);
+                                }
+                            }catch (Exception ignored){
+
+                            }
+                        });
+                    }
                 }
             }else {
                 targetEntity.level().broadcastDamageEvent(targetEntity, (new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli)));
@@ -51,9 +70,7 @@ public class LoliAttackUtil {
                 if (remove) {
                     removeEntity(targetEntity);
                 }
-                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.FELL_OUT_OF_WORLD), isLoli), Float.POSITIVE_INFINITY);
-                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(DamageTypes.PLAYER_ATTACK), isLoli), Float.POSITIVE_INFINITY);
-                targetEntity.hurt(new DamageSource(targetEntity.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation("loli_pickaxe:loli_pickaxe"))), isLoli), Float.POSITIVE_INFINITY);
+                targetEntity.hurt(damageSource, Float.POSITIVE_INFINITY);
                 if (targetEntity instanceof LivingEntity targetLiving && !Util.isLoliEntity(targetLiving)) {
                     targetLiving.setHealth(0.0F);
                     targetLiving.isDeadOrDying();
@@ -83,7 +100,7 @@ public class LoliAttackUtil {
     public static void KillEntitle(Level world, double x, double y, double z, Player player){
         int entityCount  = 0;
         Vec3 _center = new Vec3(x, y, z);
-        List<Entity> targetClass = world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(2100.0D), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
+        List<Entity> targetClass = world.getEntitiesOfClass(Entity.class, (new AABB(_center, _center)).inflate(Config.attackRange), e -> true).stream().sorted(Comparator.comparingDouble(_entcnd -> _entcnd.distanceToSqr(_center))).toList();
         for (Entity target : targetClass){
             if (!(target instanceof Player)) {
                 entityCount++;

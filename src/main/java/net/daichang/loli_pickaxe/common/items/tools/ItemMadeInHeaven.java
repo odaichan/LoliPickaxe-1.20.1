@@ -2,6 +2,7 @@ package net.daichang.loli_pickaxe.common.items.tools;
 
 import net.daichang.loli_pickaxe.common.items.IToolItem;
 import net.daichang.loli_pickaxe.util.HavenUtil.HavenUtil;
+import net.daichang.loli_pickaxe.util.handler.TimeDataHandler;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -18,11 +19,11 @@ public class ItemMadeInHeaven extends IToolItem {
 
     @Override
     public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand p_41434_) {
-        if(player.isShiftKeyDown()){
-            HavenUtil.setMadeInHaven(false);
-        }else {
+        if(player.isShiftKeyDown() && !TimeDataHandler.get().isTimeStopped()){
             HavenUtil.setMadeInHaven(true);
             if(level.isClientSide())player.displayClientMessage(Component.literal(   ChatFormatting.YELLOW +"『Made in heaven, time begins to accelerate!』"), false);
+        }else {
+            HavenUtil.setMadeInHaven(false);
         }
         return super.use(level, player, p_41434_);
     }

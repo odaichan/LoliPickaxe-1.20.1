@@ -3,7 +3,6 @@ package net.daichang.loli_pickaxe.mixins;
 import net.daichang.loli_pickaxe.common.entity.Boss.EntityLoliGod;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.DeathList;
-import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.core.BlockPos;
@@ -20,8 +19,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
-import static net.daichang.loli_pickaxe.util.Util.sMode;
 
 @Mixin(LivingEntity.class)
 public abstract class MixinLivingEntity {
@@ -63,13 +60,6 @@ public abstract class MixinLivingEntity {
         }
          if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
              LoliDefenseUtil.safeEntity(loli_pickaxe$living);
-         }
-         if (sMode && DeathList.isList(loli_pickaxe$living)){
-             int loliDeath = 0;
-             loliDeath++;
-             if (loliDeath >= 20) {
-                 LoliAttackUtil.removeEntity(loli_pickaxe$living);
-             }
          }
     }
 

@@ -8,7 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
-import static net.daichang.loli_pickaxe.util.Util.blueScreen;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class CanBlueScreen {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){

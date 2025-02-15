@@ -1,9 +1,9 @@
 package net.daichang.loli_pickaxe.mixins;
 
+import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
-import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +27,7 @@ public class MixinPlayer {
     @Inject(method = "hurt", at = @At("RETURN"), cancellable = true)
     private void hurt(DamageSource source, float p_36155_, CallbackInfoReturnable<Boolean> cir){
         Entity target = source.getEntity();
-        if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe) && target instanceof LivingEntity && Util.reverseInjury){
+        if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe) && target instanceof LivingEntity && Config.reverseInjury){
             LoliAttackUtil.killEntity(loli_pickaxe$loli,target);
             cir.setReturnValue(false);
         }
@@ -35,7 +35,7 @@ public class MixinPlayer {
 
     @Inject(method = "isHurt", at = @At("RETURN"), cancellable = true)
     private void isHurt(CallbackInfoReturnable<Boolean> cir){
-        if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe)  && Util.reverseInjury){
+        if(loli_pickaxe$loli.getInventory().contains(loli_pickaxe$loliPickaxe)  && Config.reverseInjury){
             cir.setReturnValue(false);
         }
     }

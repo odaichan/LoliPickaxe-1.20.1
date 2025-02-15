@@ -9,7 +9,7 @@ import net.daichang.loli_pickaxe.minecraft.Commands.entityTools.LoliKillEntityCo
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
-import static net.daichang.loli_pickaxe.util.Util.canRemoval;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class LoliEntityCommand {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){

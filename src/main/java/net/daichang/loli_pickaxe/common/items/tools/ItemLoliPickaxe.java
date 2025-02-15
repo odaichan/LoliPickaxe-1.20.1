@@ -7,6 +7,7 @@ import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -29,7 +30,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+import static net.daichang.loli_pickaxe.Config.Config.*;
+
 public class ItemLoliPickaxe extends Item {
+
     public ItemLoliPickaxe() {
         super(new Properties().rarity(Rarity.EPIC).stacksTo(1).fireResistant());
         MinecraftForge.EVENT_BUS.register(this);
@@ -41,13 +45,7 @@ public class ItemLoliPickaxe extends Item {
         if (player.isShiftKeyDown()) {
             LoliAttackUtil.KillEntitle(level, player.getX(), player.getY(), player.getX(), player);
         }else {
-            Config.breakRange++;
-            if (Config.breakRange>5){
-                Config.breakRange = 0;
-            }
-            if  (level.isClientSide()){
-                player.displayClientMessage(Component.literal("挖掘范围更改为" + Config.breakRange + "*" + Config.breakRange +"*"+Config.breakRange), false);
-            }
+
         }
         return super.use(level, player, hand);
     }
@@ -80,22 +78,23 @@ public class ItemLoliPickaxe extends Item {
 
     @Override
     public void appendHoverText(ItemStack p_41421_, @Nullable Level p_41422_, List<Component> list, TooltipFlag p_41424_) {
-        int breakRange = Config.breakRange + 2;
+        CompoundTag tag = p_41421_.getOrCreateTag();
         double breakRanges = Config.breakBlockRange;
-        list.add(Component.literal("挖掘范围为" +breakRange+"*" + breakRange +"*"+breakRange));
-        if (Util.sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod").withStyle(ChatFormatting.GRAY));
-        if (Util.classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target").withStyle(ChatFormatting.GRAY));
-        if (Util.blueScreen) list.add(Component.translatable("list.loli_pickaxe.blue_screen").withStyle(ChatFormatting.GRAY));
-        if (Util.remove) list.add(Component.translatable("list.loli_pickaxe.remove").withStyle(ChatFormatting.GRAY));
-        if (Util.kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player").withStyle(ChatFormatting.GRAY));
-        if (Util.reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury").withStyle(ChatFormatting.GRAY));
-        if (Util.displayFluidBorder) list.add(Component.translatable("list.loli_pickaxe.display_fluid_border").withStyle(ChatFormatting.GRAY));
-        if (Util.forcedExcavation) list.add(Component.translatable("list.loli_pickaxe.forced_excavation").withStyle(ChatFormatting.GRAY));
-        if (Util.clearInventory) list.add(Component.translatable("list.loli_pickaxe.clear_inventory").withStyle(ChatFormatting.GRAY));
-        if (Util.breakRange) list.add(Component.literal("挖掘距离："+breakRanges).withStyle(ChatFormatting.GRAY));
-        if (Util.disarm) list.add(Component.translatable("list.loli_pickaxe.disarm").withStyle(ChatFormatting.GRAY));
-        if (Util.soulAssumption) list.add(Component.translatable("list.loli_pickaxe.soul_assumption").withStyle(ChatFormatting.GRAY));
-        if (Util.entityReachQ) list.add(Component.literal("左键攻击距离："+ Config.entityAttackRange).withStyle(ChatFormatting.GRAY));
+        list.add(Component.literal("潜行右键攻击距离为 " + Config.attackRange));
+        if (sMode) list.add(Component.translatable("list.loli_pickaxe.super_mod").withStyle(ChatFormatting.GRAY));
+        if (classTarget) list.add(Component.translatable("list.loli_pickaxe.class_target").withStyle(ChatFormatting.GRAY));
+        if (blueScreen) list.add(Component.translatable("list.loli_pickaxe.blue_screen").withStyle(ChatFormatting.GRAY));
+        if (remove) list.add(Component.translatable("list.loli_pickaxe.remove").withStyle(ChatFormatting.GRAY));
+        if (kickPlayer) list.add(Component.translatable("list.loli_pickaxe.kick_player").withStyle(ChatFormatting.GRAY));
+        if (reverseInjury) list.add(Component.translatable("list.loli_pickaxe.reverse_injury").withStyle(ChatFormatting.GRAY));
+        if (displayFluidBorder) list.add(Component.translatable("list.loli_pickaxe.display_fluid_border").withStyle(ChatFormatting.GRAY));
+        if (forcedExcavation) list.add(Component.translatable("list.loli_pickaxe.forced_excavation").withStyle(ChatFormatting.GRAY));
+        if (clearInventory) list.add(Component.translatable("list.loli_pickaxe.clear_inventory").withStyle(ChatFormatting.GRAY));
+        if (breakRange) list.add(Component.literal("挖掘距离："+breakRanges).withStyle(ChatFormatting.GRAY));
+        if (disarm) list.add(Component.translatable("list.loli_pickaxe.disarm").withStyle(ChatFormatting.GRAY));
+        if (soulAssumption) list.add(Component.translatable("list.loli_pickaxe.soul_assumption").withStyle(ChatFormatting.GRAY));
+        if (entityReachQ) list.add(Component.literal("左键攻击距离："+ Config.entityAttackRange).withStyle(ChatFormatting.GRAY));
+        list.add(Component.literal(""));
         if (Screen.hasShiftDown()){
             list.add(Component.translatable("list.loli_pickaxe.daichang").withStyle(ChatFormatting.DARK_GRAY));
             list.add(Component.translatable("list.loli_pickaxe.daichang_1").withStyle(ChatFormatting.DARK_GRAY));
@@ -125,5 +124,10 @@ public class ItemLoliPickaxe extends Item {
     public boolean onDroppedByPlayer(ItemStack item, Player player) {
         player.getInventory().add(item);
         return super.onDroppedByPlayer(ItemStack.EMPTY, player);
+    }
+
+    @Override
+    public @Nullable CompoundTag getShareTag(ItemStack stack) {
+        return super.getShareTag(stack);
     }
 }

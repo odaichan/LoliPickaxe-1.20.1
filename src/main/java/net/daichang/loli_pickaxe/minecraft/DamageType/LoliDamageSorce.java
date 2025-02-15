@@ -17,7 +17,7 @@ public class LoliDamageSorce extends DamageSource {
     @Override
     public @NotNull Component getLocalizedDeathMessage(@NotNull LivingEntity attack) {
         LivingEntity livingentity = attack.getKillCredit();
-        if (livingentity != null) return Component.literal(livingentity.getDisplayName() + " 被" + attack.getDisplayName() + "使用氪金萝莉抹杀了");
+        if (livingentity != null) return Component.literal(livingentity.getDisplayName().getString() + " 被 " + attack.getDisplayName().getString() + "  使用氪金萝莉抹杀了");
         return super.getLocalizedDeathMessage(attack);
     }
 }

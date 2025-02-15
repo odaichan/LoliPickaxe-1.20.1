@@ -40,7 +40,7 @@ public class LoliFont extends Font {
             float hueOffset = (float)Util.getMillis() / 800.0F;
             for (int index = 0; index < text.length(); index++) {
                 String s = String.valueOf(text.charAt(index));
-                float hue = (hueOffset + index / text.length()) % 1.0F;
+                float hue = (hueOffset + (float) index / text.length()) % 1.0F;
                 int c = rgb & 0xFF000000 | Mth.hsvToRgb(hue, 0.8F, 1.0F);
                 super.drawInBatch(s, x, y, c, b1, matrix4f, multiBufferSource, mode, i, i1);
                 x += width(s);

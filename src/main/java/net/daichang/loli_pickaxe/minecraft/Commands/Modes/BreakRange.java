@@ -11,7 +11,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import static net.daichang.loli_pickaxe.util.Util.breakRange;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class BreakRange {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> breakRangeregister(){

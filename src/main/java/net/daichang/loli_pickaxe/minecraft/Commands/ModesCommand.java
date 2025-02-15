@@ -6,7 +6,7 @@ import net.daichang.loli_pickaxe.minecraft.Commands.Modes.*;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
-import static net.daichang.loli_pickaxe.util.Util.*;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class ModesCommand {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> register(){

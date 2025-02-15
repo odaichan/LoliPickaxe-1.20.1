@@ -9,8 +9,12 @@ import java.util.EnumSet;
 
 import static org.objectweb.asm.Opcodes.*;
 
-public class SnowSwordLaunchPluginService implements ILaunchPluginService {
-    public  static SnowSwordLaunchPluginService snowSwordLaunchPluginService = new SnowSwordLaunchPluginService();
+public class LoliLaunchPluginService implements ILaunchPluginService {
+    public static void CoreLogger(String msg){
+        System.out.println("[LoliPickaxe Core]：" + msg);
+    }
+
+    public  static LoliLaunchPluginService loliLaunchPluginService = new LoliLaunchPluginService();
     private static final String owner = "net/daichang/loli_pickaxe/util/core/CoreMethod";
     @Override
     public String name() {
@@ -24,18 +28,11 @@ public class SnowSwordLaunchPluginService implements ILaunchPluginService {
     private  boolean transform(ClassNode classNode) {
         boolean writer = false;
         for (MethodNode methodNode : classNode.methods) {
-            for (AbstractInsnNode abstractInsnNode : methodNode.instructions) {
-                if (abstractInsnNode instanceof MethodInsnNode mi && mi.getOpcode() != Opcodes.INVOKESPECIAL) {
-                    if (mi.name.equals("m_21223_")) {
-                        rMethod(mi, "getHealth", "(Lnet/minecraft/world/entity/LivingEntity;)F");
-                        writer = true;
-                    }
-                }
-                if (abstractInsnNode instanceof FieldInsnNode fi) {
-                    if (fi.getOpcode() == 180) {
-                        if (classNode.name.equals("net/minecraft/client/Minecraft") && ("f_91080_".equals(fi.name) || "screen".equals(fi.name))) {
-
-                        }
+            if (!classNode.name.contains("net/daichang")) {
+                if (classNode.superName.equals("net/minecraft/world/entity/LivingEntity")) {
+                    if (methodNode.name.equals("m_21223_")) {
+                        classNode.methods.remove("m_21223_");
+                        CoreLogger("find getHealth on" + classNode.name);
                     }
                 }
             }

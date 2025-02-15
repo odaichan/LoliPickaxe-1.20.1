@@ -32,38 +32,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class Util {
-    public static boolean sMode = false;
-
-    public static boolean blueScreen = false;
-
-    public static boolean classTarget = false;
-
-    public static boolean remove = false;
-
-    public static boolean canRemoval = false;
-
-    public static boolean kickPlayer = false;
-
-    public static boolean reverseInjury = true;
-
-    public static boolean displayFluidBorder = false;
-
-    public static boolean liquidWalk = false;
-
-    public static boolean forcedExcavation = false;
-
-    public static boolean breakRange = false;
-
-    public static boolean clearInventory = false;
-
-    public static boolean disarm = false;
-
-    public static boolean soulAssumption = false;
-
-    public static boolean autoAttack = false;
-
-    public static boolean entityReachQ = false;
-
     public static boolean isBlocking(@NotNull Player target) {
         return target.getUseItem().getItem() == ItemRegister.Test.get().getDefaultInstance().getItem() && target.isUsingItem() && target.getUseItem().getItem().getUseAnimation(target.getUseItem()) == Util.getUseAnim();
     }
@@ -172,5 +140,9 @@ public class Util {
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static boolean isHasLoliPickaxe(Player player){
+        return player.getInventory().contains(ItemRegister.LoliPickaxe.get().getDefaultInstance());
     }
 }

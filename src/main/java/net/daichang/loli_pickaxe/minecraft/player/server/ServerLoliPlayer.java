@@ -5,7 +5,6 @@ import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.minecraft.SoulList;
 import net.daichang.loli_pickaxe.util.LoliDefenseUtil;
-import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -55,7 +54,7 @@ public class ServerLoliPlayer extends ServerPlayer {
 
     @Override
     public double getBlockReach() {
-        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.breakRange){
+        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Config.breakRange){
             return Config.breakBlockRange;
         }else {
             return super.getBlockReach();
@@ -64,7 +63,7 @@ public class ServerLoliPlayer extends ServerPlayer {
 
     @Override
     public double getEntityReach() {
-        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Util.entityReachQ){
+        if (this.getMainHandItem().getItem() == ItemRegister.LoliPickaxe.get() && Config.entityReachQ){
             return Config.entityAttackRange;
         }else {
             return super.getEntityReach();

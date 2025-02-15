@@ -7,7 +7,7 @@ import net.daichang.loli_pickaxe.Config.Config;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 
-import static net.daichang.loli_pickaxe.util.Util.*;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class AttackRange {
     public static ArgumentBuilder<CommandSourceStack, LiteralArgumentBuilder<CommandSourceStack>> breakRangeregister(){

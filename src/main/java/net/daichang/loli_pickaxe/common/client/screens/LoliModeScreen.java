@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
 
-import static net.daichang.loli_pickaxe.util.Util.blueScreen;
+import static net.daichang.loli_pickaxe.Config.Config.*;
 
 public class LoliModeScreen extends Screen {
     public final static HashMap<String, Object> guistate = new HashMap<>();

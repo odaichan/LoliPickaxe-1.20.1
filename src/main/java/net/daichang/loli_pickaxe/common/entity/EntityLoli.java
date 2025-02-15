@@ -3,7 +3,6 @@ package net.daichang.loli_pickaxe.common.entity;
 import net.daichang.loli_pickaxe.common.register.AttributesRegister;
 import net.daichang.loli_pickaxe.common.register.EntityRegistry;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
-import net.daichang.loli_pickaxe.minecraft.DeathList;
 import net.daichang.loli_pickaxe.util.LoliAttackUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.nbt.CompoundTag;
@@ -76,17 +75,15 @@ public class EntityLoli extends Monster{
         super.tick();
         Level level = this.level();
         double a = new Random().nextDouble(0.1, 0.5);
-        final Vec3 _center = new Vec3(this.getX(), this.getY(), this.getZ());
         for (Entity entity : level.getEntities(this, this.getBoundingBox().inflate(1.0D))) {
             if (entity!= this && entity instanceof LivingEntity livingEntity && !Util.isLoliEntity(livingEntity) && !(entity instanceof EntityLoli) && !(entity instanceof Player) && livingEntity.isAlive()) {
                 Util.Override_DATA_HEALTH_ID(livingEntity, 0.0F);
-                DeathList.addList(livingEntity);
                 if (livingEntity.getHealth() == 0){
                     livingEntity.isDeadOrDying();
                     livingEntity.heal(-100.0F);
                 }
                 this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
-            }else if(entity instanceof Player player && !player.getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get())) && player.isAlive()) {
+            }else if(entity instanceof Player player && !player.getInventory().contains(ItemRegister.LoliPickaxe.get().getDefaultInstance()) && player.isAlive()) {
                 LoliAttackUtil.killEntity(this, player);
                 this.setPos(entity.getX() + a, entity.getY() + a, entity.getZ() + a);
             }
