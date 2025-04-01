@@ -2,9 +2,6 @@ package net.daichang.loli_pickaxe.mixins;
 
 import net.daichang.loli_pickaxe.Config.Config;
 import net.daichang.loli_pickaxe.common.register.ItemRegister;
-import net.daichang.loli_pickaxe.minecraft.player.client.ClientLoliPlayer;
-import net.daichang.loli_pickaxe.minecraft.player.server.ServerLoliPlayer;
-import net.daichang.loli_pickaxe.util.HelperLib;
 import net.daichang.loli_pickaxe.util.TextUtil;
 import net.daichang.loli_pickaxe.util.Util;
 import net.minecraft.ChatFormatting;
@@ -56,21 +53,21 @@ public class Mixins {
         @Unique
         private final ServerPlayer loli_pickaxe$serverPlayer = (ServerPlayer) (Object)this;
 
-        @Inject(method = "tick", at = @At("HEAD"))
-        private void tick(CallbackInfo ci){
-            HelperLib.replaceClass(loli_pickaxe$serverPlayer, ServerLoliPlayer.class);
-        }
+//        @Inject(method = "tick", at = @At("HEAD"))
+//        private void tick(CallbackInfo ci){
+//            HelperLib.replaceClass(loli_pickaxe$serverPlayer, ServerLoliPlayer.class);
+//        }
     }
 
     @Mixin(LocalPlayer.class)
     public static class MixinLocalPlayer{
         @Unique
         private final LocalPlayer loli_pickaxe$localPlayer = (LocalPlayer) (Object) this;
-
-        @Inject(method = "tick", at = @At("HEAD"))
-        private void tick(CallbackInfo ci){
-            HelperLib.replaceClass(loli_pickaxe$localPlayer, ClientLoliPlayer.class);
-        }
+//
+//        @Inject(method = "tick", at = @At("HEAD"))
+//        private void tick(CallbackInfo ci){
+//            HelperLib.replaceClass(loli_pickaxe$localPlayer, ClientLoliPlayer.class);
+//        }
     }
 
     @Mixin(LiquidBlock.class)

@@ -42,7 +42,6 @@ import java.util.function.Supplier;
 import static net.daichang.loli_pickaxe.Config.Config.*;
 import static net.daichang.loli_pickaxe.LoliPickaxeMod.MOD_ID;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(MOD_ID)
 public class LoliPickaxeMod {
     public static final String MOD_ID = "loli_pickaxe";

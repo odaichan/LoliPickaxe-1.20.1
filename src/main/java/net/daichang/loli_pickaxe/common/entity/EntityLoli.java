@@ -240,4 +240,7 @@ public class EntityLoli extends Monster{
             return reason;
         return null;
     }
+
+    @Override
+    protected void dropCustomDeathLoot(DamageSource p_21385_, int p_21386_, boolean p_21387_) {}
 }

@@ -5,6 +5,8 @@ import net.daichang.loli_pickaxe.common.register.ItemRegister;
 import net.daichang.loli_pickaxe.util.core.EntityCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.DeathScreen;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.Connection;
 import net.minecraft.network.PacketSendListener;
 import net.minecraft.network.chat.Component;
@@ -13,6 +15,7 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;
@@ -50,6 +53,13 @@ public class Util {
             }
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void addDeathParticle(ServerLevel serverLevel, double x, double y, double z) {
+        for (int i = 0; i<14; i++) {
+            SimpleParticleType type = ParticleTypes.BUBBLE.getType();
+            serverLevel.addParticle(type, x, y, z, 0, 0, 0);
         }
     }
 

@@ -30,8 +30,9 @@ public abstract class MixinLivingEntity {
 
     @Shadow protected abstract boolean trapdoorUsableAsLadder(BlockPos p_21177_, BlockState p_21178_);
 
-    @Unique
-    private final LivingEntity loli_pickaxe$living = (LivingEntity) (Object) this;
+    @Shadow protected abstract void tickDeath();
+
+    @Unique private final LivingEntity loli_pickaxe$living = (LivingEntity) (Object) this;
 
     @Inject(method = "getHealth", at = @At("RETURN"), cancellable = true)
     private void getHealth(CallbackInfoReturnable<Float> cir){
@@ -58,9 +59,12 @@ public abstract class MixinLivingEntity {
         if (loli_pickaxe$living instanceof Player && ((Player) loli_pickaxe$living).getInventory().contains(new ItemStack(ItemRegister.LoliPickaxe.get()))){
             LoliDefenseUtil.loliDefense((Player) loli_pickaxe$living);
         }
-         if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
-             LoliDefenseUtil.safeEntity(loli_pickaxe$living);
-         }
+        if(Util.isLoliEntity(loli_pickaxe$living) && !(loli_pickaxe$living instanceof Player)){
+            LoliDefenseUtil.safeEntity(loli_pickaxe$living);
+        }
+        if (DeathList.isList(loli_pickaxe$living)) {
+            this.tickDeath();
+        }
     }
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
@@ -89,4 +93,5 @@ public abstract class MixinLivingEntity {
             ci.cancel();
         }
     }
+
 }

@@ -70,6 +70,10 @@ public class LoliPickaxeEvent {
         player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_1"), false);
         player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_2"), false);
         player.displayClientMessage(Component.translatable("chat.loli_pickaxe.chat_3"), false);
+        Level level = player.level();
+        if (level instanceof ServerLevel serverLevel) {
+
+        }
     }
 
     @SubscribeEvent
@@ -78,5 +82,38 @@ public class LoliPickaxeEvent {
         if(HavenUtil.isHaven() && level instanceof ServerLevel server && !TimeDataHandler.get().isTimeStopped()){
             HavenUtil.setDayTime(server);
         }
+    }
+
+    private static long targetTime = 12000L;
+    // 当前时间
+    private static long currentTime = 6000L;
+    // 每tick时间变化的幅度
+    private static final long TIME_CHANGE_STEP = 10L;
+
+    @SubscribeEvent
+    public static void onWorldTick(TickEvent.LevelTickEvent event) {
+        if (event.phase == TickEvent.Phase.START && event.level instanceof ServerLevel level) {
+            // 检查是否需要改变时间
+            if (currentTime != targetTime) {
+                // 根据目标时间和当前时间的差值来决定时间变化的方向
+                long newTime = currentTime + (targetTime > currentTime ? TIME_CHANGE_STEP : -TIME_CHANGE_STEP);
+                // 确保时间不会超出合理范围
+                newTime = Math.min(Math.max(newTime, 0L), 24000L);
+                // 设置新的游戏时间
+                level.setDayTime(newTime);
+                // 更新当前时间
+                currentTime = newTime;
+            }
+        }
+    }
+
+    // 设置目标时间为白天
+    public static void setTargetTimeToDay() {
+        targetTime = 6000L;
+    }
+
+    // 设置目标时间为夜晚
+    public static void setTargetTimeToNight() {
+        targetTime = 18000L;
     }
 }

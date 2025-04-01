@@ -51,15 +51,20 @@ public class LoliAttackUtil {
                     for (int loli = 0; loli < 20; loli ++){
                         living.deathTime = loli;
                         int finalLoli = loli;
-                        new Thread(() -> {
+                        Thread thread =new Thread(() -> {
                             try {
-                                if (finalLoli == 19){
-                                    living.remove(Entity.RemovalReason.KILLED);
+                                while (Minecraft.getInstance().isRunning()) {
+                                    if (finalLoli == 19)  {
+                                        living.remove(Entity.RemovalReason.KILLED);
+                                        serverLevel.entityTickList.remove(living);
+                                        Util.addDeathParticle(serverLevel, living.getX(), living.getY(), living.getZ());
+                                        break;
+                                    }
                                 }
-                            }catch (Exception ignored){
-
-                            }
+                            }catch (Exception ignored){}
                         });
+                        thread.start();
+                        thread.stop();
                     }
                 }
             }else {
